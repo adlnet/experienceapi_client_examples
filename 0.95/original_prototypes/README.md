@@ -4,7 +4,7 @@ Original Prototypes
 These are the original client prototypes produced
 with the LRS.
 
-**config.js**
+###config.js
 config.js is used to configure the LRS endpoint and user information. This file needs created. To do this, edit config.js.template
 
 example:
