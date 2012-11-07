@@ -17,29 +17,29 @@ $(document).ready(function(){
 		TC_GetStatements(25,null,null,RenderStatements, true);
 	});
 	
-	TC_GetActivityProfile ("scorm.com/JsTetris_TCAPI", "highscores", RenderHighScores);
-	TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","scorm.com/JsTetris_TCAPI",RenderTetrisScoreChart);
+	TC_GetActivityProfile ("adlnet.gov/JsTetris_TCAPI", "highscores", RenderHighScores);
+	TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","adlnet.gov/JsTetris_TCAPI",RenderTetrisScoreChart);
 	$("#refreshHighScores").click(function(){
 		$("#tetrisHighScoreData").empty();
-		TC_GetActivityProfile("scorm.com/JsTetris_TCAPI", "highscores", RenderHighScores);
-		TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","scorm.com/JsTetris_TCAPI",RenderTetrisScoreChart);
+		TC_GetActivityProfile("adlnet.gov/JsTetris_TCAPI", "highscores", RenderHighScores);
+		TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","adlnet.gov/JsTetris_TCAPI",RenderTetrisScoreChart);
 	});
 	
-	// TC_GetStatements(0,null,"scorm.com/GolfExample_TCAPI",RenderGolfData);
+	// TC_GetStatements(0,null,"adlnet.gov/GolfExample_TCAPI",RenderGolfData);
 	// RequestGolfQuestions();
 	// $("#refreshGolfData").click(function(){
 	// 	$("#golfCourseData").empty();
-	// 	TC_GetStatements(0,null,"scorm.com/GolfExample_TCAPI",RenderGolfData);
+	// 	TC_GetStatements(0,null,"adlnet.gov/GolfExample_TCAPI",RenderGolfData);
 	// 	$(".golfQuestion").remove();
 	// 	RequestGolfQuestions();
 	// });
 	
 	
-	// TC_GetStatements(0,null,"scorm.com/Course/NashvilleMuseumsTour",RenderLocationData);
+	// TC_GetStatements(0,null,"adlnet.gov/Course/NashvilleMuseumsTour",RenderLocationData);
 	// RequestLocations();
 	// $('#refreshLocationCourseData').click(function(){
 	// 	$("#locationCourseData").empty();
-	// 	TC_GetStatements(0,null,"scorm.com/Course/NashvilleMuseumsTour",RenderLocationData);
+	// 	TC_GetStatements(0,null,"adlnet.gov/Course/NashvilleMuseumsTour",RenderLocationData);
 	// 	$(".locationRow").remove();
 	// 	RequestLocations();
 	// });
@@ -370,7 +370,7 @@ function RenderGolfData(xhr){
 	html += "</table>";
 	
 	$("#golfCourseData").append(html);
-	TC_GetStatements(0,'completed',"scorm.com/GolfExample_TCAPI/GolfAssessment.html",RenderGolfDataScores);
+	TC_GetStatements(0,'completed',"adlnet.gov/GolfExample_TCAPI/GolfAssessment.html",RenderGolfDataScores);
 	
 }
 
@@ -387,26 +387,26 @@ function RenderGolfDataScores(xhr){
 }
 
 function RequestGolfQuestions(){
-	/*var questions = ["com.scorm.golfsamples.interactions.playing_1",
-					"com.scorm.golfsamples.interactions.playing_2",
-					"com.scorm.golfsamples.interactions.playing_3",
-					"com.scorm.golfsamples.interactions.playing_4",
-					"com.scorm.golfsamples.interactions.playing_5",
-					"com.scorm.golfsamples.interactions.etiquette_1",
-					"com.scorm.golfsamples.interactions.etiquette_2",
-					"com.scorm.golfsamples.interactions.etiquette_3",
-					"com.scorm.golfsamples.interactions.handicap_1",
-					"com.scorm.golfsamples.interactions.handicap_2",
-					"com.scorm.golfsamples.interactions.handicap_3",
-					"com.scorm.golfsamples.interactions.handicap_4",
-					"com.scorm.golfsamples.interactions.fun_1",
-					"com.scorm.golfsamples.interactions.fun_2",
-					"com.scorm.golfsamples.interactions.fun_3"];
+	/*var questions = ["gov.adlnet.golfsamples.interactions.playing_1",
+					"gov.adlnet.golfsamples.interactions.playing_2",
+					"gov.adlnet.golfsamples.interactions.playing_3",
+					"gov.adlnet.golfsamples.interactions.playing_4",
+					"gov.adlnet.golfsamples.interactions.playing_5",
+					"gov.adlnet.golfsamples.interactions.etiquette_1",
+					"gov.adlnet.golfsamples.interactions.etiquette_2",
+					"gov.adlnet.golfsamples.interactions.etiquette_3",
+					"gov.adlnet.golfsamples.interactions.handicap_1",
+					"gov.adlnet.golfsamples.interactions.handicap_2",
+					"gov.adlnet.golfsamples.interactions.handicap_3",
+					"gov.adlnet.golfsamples.interactions.handicap_4",
+					"gov.adlnet.golfsamples.interactions.fun_1",
+					"gov.adlnet.golfsamples.interactions.fun_2",
+					"gov.adlnet.golfsamples.interactions.fun_3"];
 	
 	for (var i = 0; i < questions.length ; i++){
 		TC_GetStatements(0,'answered',questions[i],RenderGolfQuestions);
 	}*/
-	TC_GetStatementsWithinContext(0, 'answered', 'scorm.com/GolfExample_TCAPI', RenderGolfQuestions);
+	TC_GetStatementsWithinContext(0, 'answered', 'adlnet.gov/GolfExample_TCAPI', RenderGolfQuestions);
 	
 }
 function RenderGolfQuestions(xhr){
@@ -500,23 +500,23 @@ function RenderLocationData(xhr){
 }
 
 function RequestLocations(){
-	/*var locations = ["scorm.com/Course/NashvilleMuseums/Parthenon",
-					"scorm.com/Course/NashvilleMuseums/CountryMusicHallofFame",
-					"scorm.com/Course/NashvilleMuseums/TheFrist",
-					"scorm.com/Course/NashvilleMuseums/AdventureScienceCenter",
-					"scorm.com/Course/NashvilleMuseums/Cheekwood"];*/
+	/*var locations = ["adlnet.gov/Course/NashvilleMuseums/Parthenon",
+					"adlnet.gov/Course/NashvilleMuseums/CountryMusicHallofFame",
+					"adlnet.gov/Course/NashvilleMuseums/TheFrist",
+					"adlnet.gov/Course/NashvilleMuseums/AdventureScienceCenter",
+					"adlnet.gov/Course/NashvilleMuseums/Cheekwood"];*/
 	
-	/*var locations = ["scorm.com/Course/DevLearnLasVegas/DevLearn",
-		"scorm.com/Course/DevLearnLasVegas/Fountains",
-		"scorm.com/Course/DevLearnLasVegas/EiffelTower",
-		"scorm.com/Course/DevLearnLasVegas/HarleyDavidson",
-		"scorm.com/Course/DevLearnLasVegas/NYNY",
-		"scorm.com/Course/DevLearnLasVegas/LeoLion",
-		"scorm.com/Course/DevLearnLasVegas/Airport"];*/
+	/*var locations = ["adlnet.gov/Course/DevLearnLasVegas/DevLearn",
+		"adlnet.gov/Course/DevLearnLasVegas/Fountains",
+		"adlnet.gov/Course/DevLearnLasVegas/EiffelTower",
+		"adlnet.gov/Course/DevLearnLasVegas/HarleyDavidson",
+		"adlnet.gov/Course/DevLearnLasVegas/NYNY",
+		"adlnet.gov/Course/DevLearnLasVegas/LeoLion",
+		"adlnet.gov/Course/DevLearnLasVegas/Airport"];*/
 	/*for (var i = 0; i < locations.length ; i++){
 		TC_GetStatements(0,null,locations[i],RenderLocations);
 	}*/
-	TC_GetStatementsWithinContext(0, 'experienced', 'scorm.com/Course/NashvilleMuseumsTour', RenderLocations);
+	TC_GetStatementsWithinContext(0, 'experienced', 'adlnet.gov/Course/NashvilleMuseumsTour', RenderLocations);
 	
 }
 function RenderLocations(xhr){
