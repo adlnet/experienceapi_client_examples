@@ -96,7 +96,7 @@
 				var em = $("#tc_emailInput_golf").val();
 				var mbox = (em.indexOf('mailto:') == 0) ? em : 'mailto:' + em;
 				var nm = $("#tc_nameInput_golf").val();
-				var actor = {'mbox' : [mbox], 'name' : [nm]};
+				var actor = {'mbox' : mbox, 'name' : nm};
 				
 				
 				$(this).attr('href',$(this).attr('baseref') 
@@ -210,7 +210,7 @@
 				</div>
 
 				<div class='prototypeDiv'>
-<!-- not updated yet
+
 				<h2>Golf Example</h2>
 				
 				<ul>
@@ -232,7 +232,7 @@
 
 				
 				<hr/>
--->
+
 
 				</div>
 
