@@ -65,7 +65,7 @@ function TC_GetStatementsWithinContext (num, verb, activityId, callbackFunction,
 }
 
 function TC_GetStatements (num,verb,activityId,callbackFunction, nextPage, isContextActivity) {
-	var url = endpoint + "TCAPI/statements/?sparse=false";
+	var url = endpoint + "XAPI/statements/?sparse=false";
 	if (nextPage && moreStatementsUrl !== null && moreStatementsUrl !== undefined){
 		url = endpoint + moreStatementsUrl.substr(1);
 	} else {
@@ -88,7 +88,7 @@ function TC_GetStatements (num,verb,activityId,callbackFunction, nextPage, isCon
 }
 
 function TC_GetActivityProfile (activityId, profileKey, callbackFunction) {
-		var url = endpoint + "TCAPI/activities/profile?activityId=<activity ID>&profileId=<profilekey>";
+		var url = endpoint + "XAPI/activities/profile?activityId=<activity ID>&profileId=<profilekey>";
 		
 		url = url.replace('<activity ID>',encodeURIComponent(activityId));
 		url = url.replace('<profilekey>',encodeURIComponent(profileKey));

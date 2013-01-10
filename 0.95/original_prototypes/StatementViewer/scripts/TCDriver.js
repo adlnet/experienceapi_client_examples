@@ -164,9 +164,9 @@ function TCDriver_GetIEModeRequest(method, url, headers, data){
 function GetTCProps() {
 
     var props = {
-        endpoint: "http://10.100.21.33:8000/TCAPI/",
-        auth: "Basic " + Base64.encode('tom:$c0rmR0ck$'),
-        actor: { "mbox": ["tom.creighton.ctr@adlnet.gov"], "name": ["Tom Creighton"] }
+        endpoint: "http://10.100.21.33:8000/XAPI/",
+        auth: "Basic " + Base64.encode('tom:1234'),
+        actor: { "mbox": ["tom@example.com"], "name": ["Tom Creighton"] }
         //registration:"",
         //activity_id:"NDXS9EO128",
         //grouping:"",
