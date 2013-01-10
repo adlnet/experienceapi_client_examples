@@ -216,7 +216,7 @@ function _TCDriver_PrepareStatement(lrs, stmt) {
 function TCDriver_SendStatement (lrs, stmt, callback) {
     if (lrs.endpoint != undefined && lrs.endpoint != "" && lrs.auth != undefined && lrs.auth != ""){
 		_TCDriver_PrepareStatement(lrs, stmt);
-        XHR_request(lrs, lrs.endpoint+"TCAPI/statements/?statementId="+_ruuid(), "PUT", JSON.stringify(stmt), lrs.auth, callback);
+        XHR_request(lrs, lrs.endpoint+"XAPI/statements/?statementId="+_ruuid(), "PUT", JSON.stringify(stmt), lrs.auth, callback);
     }
 }
 
@@ -227,7 +227,7 @@ function TCDriver_SendMultiStatements (lrs, stmtArray, callback) {
             var stmt = stmtArray[i];
 			_TCDriver_PrepareStatement(lrs, stmt);
         }
-        XHR_request(lrs,lrs.endpoint+"TCAPI/statements/", "POST", JSON.stringify(stmtArray), lrs.auth, callback);
+        XHR_request(lrs,lrs.endpoint+"XAPI/statements/", "POST", JSON.stringify(stmtArray), lrs.auth, callback);
     }
 }
 
@@ -235,7 +235,7 @@ function TCDriver_SendMultiStatements (lrs, stmtArray, callback) {
 // Synchronous if callback is not provided (not recommended)
 function TCDriver_SetState (lrs, activityId, stateKey, stateVal, callback) {
     if (lrs.endpoint != undefined && lrs.endpoint != "" && lrs.auth != undefined && lrs.auth != ""){
-        var url = lrs.endpoint + "TCAPI/activities/state?activityId=<activity ID>&actor=<actor>&stateId=<statekey>";
+        var url = lrs.endpoint + "XAPI/activities/state?activityId=<activity ID>&actor=<actor>&stateId=<statekey>";
         
         url = url.replace('<activity ID>',encodeURIComponent(activityId));
         url = url.replace('<actor>',encodeURIComponent(lrs.actor));
@@ -251,7 +251,7 @@ function TCDriver_SetState (lrs, activityId, stateKey, stateVal, callback) {
 // Synchronous if callback is not provided (not recommended)
 function TCDriver_GetState (lrs, activityId, stateKey, callback) {
     if (lrs.endpoint != undefined && lrs.endpoint != "" && lrs.auth != undefined && lrs.auth != ""){
-        var url = lrs.endpoint + "TCAPI/activities/state?activityId=<activity ID>&actor=<actor>&stateId=<statekey>";
+        var url = lrs.endpoint + "XAPI/activities/state?activityId=<activity ID>&actor=<actor>&stateId=<statekey>";
         
         url = url.replace('<activity ID>',encodeURIComponent(activityId));
         url = url.replace('<actor>',encodeURIComponent(lrs.actor));
@@ -269,7 +269,7 @@ function TCDriver_GetState (lrs, activityId, stateKey, callback) {
 function TCDriver_SendActivityProfile (lrs, activityId, profileKey, profileStr, lastSha1Hash, callback) {
     
     if (lrs.endpoint != undefined && lrs.endpoint != "" && lrs.auth != undefined && lrs.auth != ""){
-        var url = lrs.endpoint + "TCAPI/activities/profile?activityId=<activity ID>&profileId=<profilekey>";
+        var url = lrs.endpoint + "XAPI/activities/profile?activityId=<activity ID>&profileId=<profilekey>";
         
         url = url.replace('<activity ID>',encodeURIComponent(activityId));
         url = url.replace('<profilekey>',encodeURIComponent(profileKey));
@@ -286,7 +286,7 @@ function TCDriver_SendActivityProfile (lrs, activityId, profileKey, profileStr, 
 function TCDriver_GetActivityProfile (lrs, activityId, profileKey, callback) {
     
     if (lrs.endpoint != undefined && lrs.endpoint != "" && lrs.auth != undefined && lrs.auth != ""){
-        var url = lrs.endpoint + "TCAPI/activities/profile?activityId=<activity ID>&profileId=<profilekey>";
+        var url = lrs.endpoint + "XAPI/activities/profile?activityId=<activity ID>&profileId=<profilekey>";
         
         url = url.replace('<activity ID>',encodeURIComponent(activityId));
         url = url.replace('<profilekey>',encodeURIComponent(profileKey));
@@ -300,7 +300,7 @@ function TCDriver_GetActivityProfile (lrs, activityId, profileKey, callback) {
 function TCDriver_GetStatements (lrs,sendActor,verb,activityId, callback) {
     if (lrs.endpoint != undefined && lrs.endpoint != "" && lrs.auth != undefined && lrs.auth != ""){
         
-        var url = lrs.endpoint + "TCAPI/statements/?sparse=false";
+        var url = lrs.endpoint + "XAPI/statements/?sparse=false";
         if (sendActor){
             url += "&actor=" + encodeURIComponent(lrs.actor);
         }
