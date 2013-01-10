@@ -234,7 +234,7 @@ TINCAN.Viewer.prototype.searchStatements = function(){
 	queryObj.instructor = helper.getInstructor();
 	queryObj.limit = 25;
 	
-	var url = this.getEndpoint() + "TCAPI/statements?" + queryObj.toString();
+	var url = this.getEndpoint() + "XAPI/statements?" + queryObj.toString();
 	$("#TCAPIQueryText").text(url);
 
 	this.getStatements(queryObj, this.getCallback(this.renderStatementsHandler));
@@ -250,12 +250,12 @@ TINCAN.Viewer.prototype.getMoreStatements = function(){
 
 TINCAN.Viewer.prototype.getStatements = function(queryObj, callback){
     //NH var url = this.getEndpoint() + "statements?" + queryObj.toString();
-    var url = this.getEndpoint() + "TCAPI/statements?" + queryObj.toString();
+    var url = this.getEndpoint() + "XAPI/statements?" + queryObj.toString();
 	XHR_request(tc_lrs, url, "GET", null, this.getAuth(), callback);
 };
 
 TINCAN.Viewer.prototype.getActivityProfile = function(activityId, profileKey, callbackFunction) {
-		var url = this.getEndpoint() + "TCAPI/activities/profile?activityId=<activity ID>&profileId=<profilekey>";
+		var url = this.getEndpoint() + "XAPI/activities/profile?activityId=<activity ID>&profileId=<profilekey>";
 		url = url.replace('<activity ID>',encodeURIComponent(activityId));
 		url = url.replace('<profilekey>',encodeURIComponent(profileKey));
 		XHR_request(tc_lrs, url, "GET", null, this.getAuth(), callbackFunction, true);
