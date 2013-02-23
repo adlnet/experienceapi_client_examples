@@ -120,17 +120,17 @@ TINCAN.Viewer.prototype.TinCanSearchHelper = function(){
 	
 	this.getSince = function(){
 		var since = this.getSearchVar("since");
-		if(since != null && !this.dateStrIncludesTimeZone(since)){
-			since = since + "Z";
-		}
+		// if(since != null && !this.dateStrIncludesTimeZone(since)){
+		// 	since = since + "Z";
+		// }
 		return since;
 	};
 	
 	this.getUntil = function(){
 		var until = this.getSearchVar("until");
-		if(until != null && !this.dateStrIncludesTimeZone(until)){
-			until = until + "Z";
-		}
+		// if(until != null && !this.dateStrIncludesTimeZone(until)){
+		// 	until = until + "Z";
+		// }
 		return until;
 	};
 	
