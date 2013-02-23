@@ -127,9 +127,9 @@ function tc_sendStatment_FinishLevel(level,time,apm,lines,score){
 
 		var resultObj = {
             "extensions":{
-                "time":time,
-			    "apm":apm,
-			    "lines":lines
+                "ext:time":time,
+			    "ext:apm":apm,
+			    "ext:lines":lines
             },
 			"score":{
 			    "raw":score,
@@ -167,10 +167,10 @@ function tc_sendStatment_EndGame(level,time,apm,lines,score){
 				"min":0
             },
             "extensions":{
-			    "level":level,
-			    "time":time,
-			    "apm":apm,
-			    "lines":lines
+			    "ext:level":level,
+			    "ext:time":time,
+			    "ext:apm":apm,
+			    "ext:lines":lines
             }
         };
 
