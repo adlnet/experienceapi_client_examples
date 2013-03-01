@@ -17,12 +17,12 @@ $(document).ready(function(){
 		TC_GetStatements(25,null,null,RenderStatements, true);
 	});
 	
-	TC_GetActivityProfile ("adlnet.gov/JsTetris_TCAPI", "highscores", RenderHighScores);
-	TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","adlnet.gov/JsTetris_TCAPI",RenderTetrisScoreChart);
+	TC_GetActivityProfile ("act:adlnet.gov/JsTetris_TCAPI", "highscores", RenderHighScores);
+	TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_TCAPI",RenderTetrisScoreChart);
 	$("#refreshHighScores").click(function(){
 		$("#tetrisHighScoreData").empty();
-		TC_GetActivityProfile("adlnet.gov/JsTetris_TCAPI", "highscores", RenderHighScores);
-		TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","adlnet.gov/JsTetris_TCAPI",RenderTetrisScoreChart);
+		TC_GetActivityProfile("act:adlnet.gov/JsTetris_TCAPI", "highscores", RenderHighScores);
+		TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_TCAPI",RenderTetrisScoreChart);
 	});
 	
 	// TC_GetStatements(0,null,"adlnet.gov/GolfExample_TCAPI",RenderGolfData);
@@ -370,7 +370,7 @@ function RenderGolfData(xhr){
 	html += "</table>";
 	
 	$("#golfCourseData").append(html);
-	TC_GetStatements(0,'completed',"adlnet.gov/GolfExample_TCAPI/GolfAssessment.html",RenderGolfDataScores);
+	TC_GetStatements(0,'completed',"act:adlnet.gov/GolfExample_TCAPI/GolfAssessment.html",RenderGolfDataScores);
 	
 }
 
@@ -406,7 +406,7 @@ function RequestGolfQuestions(){
 	for (var i = 0; i < questions.length ; i++){
 		TC_GetStatements(0,'answered',questions[i],RenderGolfQuestions);
 	}*/
-	TC_GetStatementsWithinContext(0, 'answered', 'adlnet.gov/GolfExample_TCAPI', RenderGolfQuestions);
+	TC_GetStatementsWithinContext(0, 'answered', 'act:adlnet.gov/GolfExample_TCAPI', RenderGolfQuestions);
 	
 }
 function RenderGolfQuestions(xhr){
@@ -516,7 +516,7 @@ function RequestLocations(){
 	/*for (var i = 0; i < locations.length ; i++){
 		TC_GetStatements(0,null,locations[i],RenderLocations);
 	}*/
-	TC_GetStatementsWithinContext(0, 'experienced', 'adlnet.gov/Course/NashvilleMuseumsTour', RenderLocations);
+	TC_GetStatementsWithinContext(0, 'experienced', 'act:adlnet.gov/Course/NashvilleMuseumsTour', RenderLocations);
 	
 }
 function RenderLocations(xhr){
