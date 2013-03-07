@@ -49,7 +49,8 @@ RESOURCE_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/statements')
 CONSUMER_KEY = '<consumer key>'
 CONSUMER_SECRET = '<consumer secret>'
 
-ERROR_FILE = '~/Desktop/error.html'
+# change this 
+ERROR_FILE = '/home/ubuntu/Desktop/error.html'
 
 class SimpleOAuthClient(oauth.OAuthClient):
 
