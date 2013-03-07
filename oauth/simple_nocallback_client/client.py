@@ -43,11 +43,13 @@ REQUEST_TOKEN_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/OAuth/initiate')
 ACCESS_TOKEN_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/OAuth/token')
 AUTHORIZATION_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/OAuth/authorize')
 CALLBACK_URL = 'oob'
-RESOURCE_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/')
+RESOURCE_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/statements')
 
 # key and secret granted by the service provider for this consumer application - same as the MockOAuthDataStore
 CONSUMER_KEY = '<consumer key>'
 CONSUMER_SECRET = '<consumer secret>'
+
+ERROR_FILE = '~/Desktop/error.html'
 
 class SimpleOAuthClient(oauth.OAuthClient):
 
@@ -60,10 +62,10 @@ class SimpleOAuthClient(oauth.OAuthClient):
         response = requests.get(oauth_request.to_url(), headers=oauth_request.to_header(), verify=False)
         if response.status_code != 200:
             print "Fail: %s" % response.status_code
-            f = open('~/Desktop/error.html', 'w')
+            f = open(ERROR_FILE, 'w')
             f.write(response.content)
             f.close()
-            print "text written to ~/Desktop/error.html"
+            print "text written to %s" % ERROR_FILE
         return oauth.OAuthToken.from_string(response.content)
 
     def fetch_access_token(self, oauth_request):
@@ -86,10 +88,10 @@ class SimpleOAuthClient(oauth.OAuthClient):
                 return 'http://example.com?oauth_verifier=%s' % raw_input("go to %s, verify, enter PIN here: " % u['next'])
             else:
                 print "Fail: %s" % response.status_code
-                f = open('~/Desktop/error.html', 'w')
+                f = open(ERROR_FILE, 'w')
                 f.write(response.content)
                 f.close()
-                print "text written to ~/Desktop/error.html"
+                print "text written to %s" % ERROR_FILE
                 raise Exception("something didn't work right\nresponse: %s -- %s" % (response.status_code, response.content))
             
         return response.content
@@ -104,10 +106,10 @@ class SimpleOAuthClient(oauth.OAuthClient):
         else:
             print "Fail: %s" % response.status_code
             #print r.text
-            f = open('~/Desktop/error.html', 'w')
+            f = open(ERROR_FILE, 'w')
             f.write(response.content)
             f.close()
-            print "text written to ~/Desktop/error.html"
+            print "text written to %s" % ERROR_FILE
             raise Exception("response didn't come back right\nresponse:%s -- %s" % (response.status_code, response.content))
 
 def run_example():
@@ -169,7 +171,7 @@ def run_example():
     print '* Access protected resources ...'
     pause()
     
-    oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, token=token, http_method='GET', http_url="http://127.0.0.1:8000/XAPI/statements")
+    oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, token=token, http_method='GET', http_url=RESOURCE_URL)
     oauth_request.sign_request(signature_method_hmac_sha1, consumer, token)
     
     print 'REQUEST (via get)'
