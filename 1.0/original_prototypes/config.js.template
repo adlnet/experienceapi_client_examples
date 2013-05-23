@@ -3,7 +3,7 @@
 function Config() {
 	"use strict";
 }
-Config.endpoint = "http://localhost:8000/";
-Config.authUser = "test";
-Config.authPassword = "password";
-Config.actor = { "mbox":"test@test.com", "name":"Tester Tester" };
+Config.endpoint = "<TCAPI end point (ending with slash)>";
+Config.authUser = "<account id>";
+Config.authPassword = "<password>";
+Config.actor = { "mbox":"<learner email>", "name":"<Learner Name>" };
