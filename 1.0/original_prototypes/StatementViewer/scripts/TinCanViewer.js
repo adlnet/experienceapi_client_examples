@@ -31,16 +31,16 @@ TINCAN.Viewer.prototype.getEndpoint = function(){
 
 TINCAN.Viewer.prototype.TinCanStatementQueryObject = function(){
 	this.verb = null;
-	this.object = null;
+	this.activity = null;
 	this.registration = null;
-	this.context = false;
-	this.actor = null;
+	// this.context = false;
+	this.agent = null;
 	this.since = null;
 	this.until = null;
 	this.limit = 0;
-	this.authoritative = true;
-	this.sparse = false;
-	this.instructor = null;
+	// this.authoritative = true;
+	// this.sparse = false;
+	// this.instructor = null;
 	
 	this.toString = function(){
 		var qs = new Array();
@@ -104,7 +104,8 @@ TINCAN.Viewer.prototype.TinCanSearchHelper = function(){
 		} else {
 			var activityId = this.getSearchVar("activityId");
 			if(activityId != null){
-				obj = {"id":activityId};
+				// obj = {"id":activityId};
+				obj = activityId;
 			}
 		}
 		return obj;
@@ -114,9 +115,9 @@ TINCAN.Viewer.prototype.TinCanSearchHelper = function(){
 		return this.getSearchVar("registration");
 	};
 	
-	this.getContext = function(){
-		return this.getSearchVarAsBoolean("context", "false");
-	};
+	// this.getContext = function(){
+	// 	return this.getSearchVarAsBoolean("context", "false");
+	// };
 	
 	this.getSince = function(){
 		var since = this.getSearchVar("since");
@@ -134,21 +135,21 @@ TINCAN.Viewer.prototype.TinCanSearchHelper = function(){
 		return until;
 	};
 	
-	this.getAuthoritative = function(){
-		return this.getSearchVarAsBoolean("authoritative", "true");
-	};
+	// this.getAuthoritative = function(){
+	// 	return this.getSearchVarAsBoolean("authoritative", "true");
+	// };
 	
-	this.getSparse = function(){
-		return this.getSearchVarAsBoolean("sparse", "false");
-	};
+	// this.getSparse = function(){
+	// 	return this.getSearchVarAsBoolean("sparse", "false");
+	// };
 	
-	this.getInstructor = function(){
-		var instructorJson = this.getSearchVar("instructorJson");
-		if(instructorJson != null){
-			return JSON.parse(instructorJson);
-		};
-		return null;
-	};
+	// this.getInstructor = function(){
+	// 	var instructorJson = this.getSearchVar("instructorJson");
+	// 	if(instructorJson != null){
+	// 		return JSON.parse(instructorJson);
+	// 	};
+	// 	return null;
+	// };
 	
 	this.dateStrIncludesTimeZone = function(str){
 		return str != null && (str.indexOf("+") >= 0 || str.indexOf("Z") >= 0); 
@@ -222,18 +223,19 @@ TINCAN.Viewer.prototype.searchStatements = function(){
 	var helper = new this.TinCanSearchHelper(); 
 	var queryObj = new this.TinCanStatementQueryObject();
 
-	queryObj.actor = helper.getActor();
+	queryObj.agent = helper.getActor();
 	queryObj.verb = helper.getVerb();
-	queryObj.object = helper.getObject();
+	queryObj.activity = helper.getObject();
 	queryObj.registration = helper.getRegistration();
-	queryObj.context = helper.getContext();
+	// queryObj.context = helper.getContext();
 	queryObj.since = helper.getSince();
 	queryObj.until = helper.getUntil();
-	queryObj.authoritative = helper.getAuthoritative();
-	queryObj.sparse = helper.getSparse();
-	queryObj.instructor = helper.getInstructor();
+	// queryObj.authoritative = helper.getAuthoritative();
+	// queryObj.sparse = helper.getSparse();
+	// queryObj.instructor = helper.getInstructor();
 	queryObj.limit = 25;
-	
+	queryObj.format = "exact";
+
 	var url = this.getEndpoint() + "XAPI/statements?" + queryObj.toString();
 	$("#TCAPIQueryText").text(url);
 

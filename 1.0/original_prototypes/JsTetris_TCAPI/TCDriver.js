@@ -235,7 +235,7 @@ function TCDriver_SendMultiStatements (lrs, stmtArray, callback) {
 // Synchronous if callback is not provided (not recommended)
 function TCDriver_SetState (lrs, activityId, stateKey, stateVal, callback) {
     if (lrs.endpoint != undefined && lrs.endpoint != "" && lrs.auth != undefined && lrs.auth != ""){
-        var url = lrs.endpoint + "XAPI/activities/state?activityId=<activity ID>&actor=<actor>&stateId=<statekey>";
+        var url = lrs.endpoint + "XAPI/activities/state?activityId=<activity ID>&agent=<actor>&stateId=<statekey>";
         
         url = url.replace('<activity ID>',encodeURIComponent(activityId));
         url = url.replace('<actor>',encodeURIComponent(lrs.actor));
@@ -251,7 +251,7 @@ function TCDriver_SetState (lrs, activityId, stateKey, stateVal, callback) {
 // Synchronous if callback is not provided (not recommended)
 function TCDriver_GetState (lrs, activityId, stateKey, callback) {
     if (lrs.endpoint != undefined && lrs.endpoint != "" && lrs.auth != undefined && lrs.auth != ""){
-        var url = lrs.endpoint + "XAPI/activities/state?activityId=<activity ID>&actor=<actor>&stateId=<statekey>";
+        var url = lrs.endpoint + "XAPI/activities/state?activityId=<activity ID>&agent=<actor>&stateId=<statekey>";
         
         url = url.replace('<activity ID>',encodeURIComponent(activityId));
         url = url.replace('<actor>',encodeURIComponent(lrs.actor));
@@ -300,9 +300,9 @@ function TCDriver_GetActivityProfile (lrs, activityId, profileKey, callback) {
 function TCDriver_GetStatements (lrs,sendActor,verb,activityId, callback) {
     if (lrs.endpoint != undefined && lrs.endpoint != "" && lrs.auth != undefined && lrs.auth != ""){
         
-        var url = lrs.endpoint + "XAPI/statements/?sparse=false";
+        var url = lrs.endpoint + "XAPI/statements/?format=exact";
         if (sendActor){
-            url += "&actor=" + encodeURIComponent(lrs.actor);
+            url += "&agent=" + encodeURIComponent(lrs.actor);
         }
         
         if (verb != null){
@@ -310,7 +310,7 @@ function TCDriver_GetStatements (lrs,sendActor,verb,activityId, callback) {
         }
         if (activityId != null){
             var obj = {id:activityId};
-            url += "&object=" + encodeURIComponent(JSON.stringify(obj));
+            url += "&activity=" + encodeURIComponent(JSON.stringify(obj));
         }
         if (lrs.registration) {
         	url += "&registration=" + encodeURIComponent(lrs.registration);

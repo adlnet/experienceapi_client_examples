@@ -97,7 +97,7 @@ function tc_sendStatment_StartNewGame(){
 		var tcGameObj = {
             'id':GAME_ID,
 			"definition":{
-				"type":"media",
+				"type":"type:media",
 				"name":{"en-US":"Js Tetris - Tin Can Prototype"},
 				"description":{"en-US":"A game of tetris."}
             }
@@ -119,7 +119,7 @@ function tc_sendStatment_FinishLevel(level,time,apm,lines,score){
 		var tcGameObj = {
             "id":"act:adlnet.gov/JsTetris_TCAPI/level" + level,
 			"definition":{
-				"type":"media",
+				"type":"type:media",
 				"name":{"en-US":"Js Tetris Level" + level},
 				"description":{"en-US":"Starting at 1, the higher the level, the harder the game."}
             }
@@ -155,7 +155,7 @@ function tc_sendStatment_EndGame(level,time,apm,lines,score){
 		var tcGameObj = {
             "id":GAME_ID,
 			"definition":{
-				"type":"media",
+				"type":"type:media",
 				"name":{"en-US":"Js Tetris - Tin Can Prototype"},
 				"description":{"en-US":"A game of tetris."}
             }
@@ -218,7 +218,7 @@ function tc_addScoreToLeaderBoard(newScoreObj, attemptCount){
         }
 
 		TCDriver_SendActivityProfile(
-            tc_lrs, GAME_ID, "highscores", 
+            tc_lrs, GAME_ID, "profile:highscores", 
             JSON.stringify(HighScoresArray),
             lastSha1Hash,
             function(xhr){
@@ -234,7 +234,7 @@ var HighScoresArray;
 var LastHighScoresStr = null;
 
 function tc_InitHighScoresObject(){
-	var lrsHighScoresStr = TCDriver_GetActivityProfile(tc_lrs, GAME_ID, "highscores");
+	var lrsHighScoresStr = TCDriver_GetActivityProfile(tc_lrs, GAME_ID, "profile:highscores");
 	if (lrsHighScoresStr === undefined || lrsHighScoresStr === null || lrsHighScoresStr == ""){
 		HighScoresArray = new Array();
 	} else {
