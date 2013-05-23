@@ -6,7 +6,7 @@
         var link = "tetris.html" +
             "?endpoint=" + encodeURIComponent(Config.endpoint) +
             "&auth=" + encodeURIComponent(auth) + 
-            "&actor=" + encodeURIComponent(JSON.stringify(Config.actor));
+            "&agent=" + encodeURIComponent(JSON.stringify(Config.actor));
 
         function onLoad(){
             document.getElementById("launchLink").setAttribute('href',link);

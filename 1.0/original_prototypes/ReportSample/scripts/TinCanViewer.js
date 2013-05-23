@@ -17,11 +17,11 @@ $(document).ready(function(){
 		TC_GetStatements(25,null,null,RenderStatements, true);
 	});
 	
-	TC_GetActivityProfile ("act:adlnet.gov/JsTetris_TCAPI", "highscores", RenderHighScores);
+	TC_GetActivityProfile ("act:adlnet.gov/JsTetris_TCAPI", "profile:highscores", RenderHighScores);
 	TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_TCAPI",RenderTetrisScoreChart);
 	$("#refreshHighScores").click(function(){
 		$("#tetrisHighScoreData").empty();
-		TC_GetActivityProfile("act:adlnet.gov/JsTetris_TCAPI", "highscores", RenderHighScores);
+		TC_GetActivityProfile("act:adlnet.gov/JsTetris_TCAPI", "profile:highscores", RenderHighScores);
 		TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_TCAPI",RenderTetrisScoreChart);
 	});
 	
@@ -65,7 +65,7 @@ function TC_GetStatementsWithinContext (num, verb, activityId, callbackFunction,
 }
 
 function TC_GetStatements (num,verb,activityId,callbackFunction, nextPage, isContextActivity) {
-	var url = endpoint + "XAPI/statements/?sparse=false";
+	var url = endpoint + "XAPI/statements/?format=exact";
 	if (nextPage && moreStatementsUrl !== null && moreStatementsUrl !== undefined){
 		url = endpoint + moreStatementsUrl.substr(1);
 	} else {
@@ -76,14 +76,16 @@ function TC_GetStatements (num,verb,activityId,callbackFunction, nextPage, isCon
 	    	url += "&verb=" + verb;
 	    }
 	    if (activityId != null){
-	    	var obj = {id:activityId};
-	    	url += "&object=" + encodeURIComponent(JSON.stringify(obj));
+	    	// var obj = {id:activityId};
+	    	var obj = activityId
+	    	// url += "&activity=" + encodeURIComponent(JSON.stringify(obj));
+	    	url += "&activity=" + obj;
+
 	    }
 	    if(isContextActivity){
-	    	url += "&context=true";
+	    	url += "&related_activities=true";
 	    }
     }
-
 	XHR_request(tc_lrs, url, "GET", null, auth, callbackFunction);
 }
 
@@ -110,6 +112,9 @@ function RenderStatements(xhr){
     moreStatementsUrl = statementsResult.more;
     if(moreStatementsUrl === undefined || moreStatementsUrl === null || moreStatementsUrl === ""){
     	$("#showAllStatements").hide();
+    }
+    else{
+    	$("#showAllStatements").show();    	
     }
 	var stmtStr = "<table>";
 	var i;
