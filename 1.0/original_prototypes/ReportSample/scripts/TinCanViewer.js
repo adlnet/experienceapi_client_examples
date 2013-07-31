@@ -251,7 +251,7 @@ function RenderStatements(xhr){
 				
 			}
 			else{
-				stmtStr += "<span class='verb'>"+ verb +"</span><span class='object'>"+ obj +"</span>";
+				stmtStr += "&nbsp;<span class='verb'>"+ verb +"</span>&nbsp;<span class='object'>"+ obj +"</span>";
 			}
 			
 			
