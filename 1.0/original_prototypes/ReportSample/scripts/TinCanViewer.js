@@ -106,6 +106,65 @@ function TC_DeleteLRS(){
 	});
 }
 
+function getActorName(actor) {
+    if (actor === undefined) {
+        return "";
+    }
+    if (actor.name !== undefined) {
+        return actor.name;
+    }
+    if (actor.mbox !== undefined) {
+        return actor.mbox;
+    }
+    if (actor.account !== undefined) {
+        return actor.account.accountName;
+    }
+    return truncateString(JSON.stringify(actor), 20);
+}
+
+function getVerb(verb) {
+	if (verb === undefined) {
+		return "";
+	}
+	if (verb.display["en-US"] !== undefined) {
+		return verb.display["en-US"];
+	}
+	if (verb.id !== undefined) {
+		return verb.id;
+	}
+	return truncateString(JSON.stringify(verb), 20);
+}
+
+function getTargetDesc(obj) {
+    if (obj.objectType !== undefined && obj.objectType !== "Activity") {
+        return getActorName(obj);
+    }
+
+    if (obj.definition !== undefined) {
+        if (obj.definition.name !== undefined) {
+            if (obj.definition.name["und"] !== undefined) {
+                return obj.definition.name["und"];
+            }
+            return obj.definition.name["en-US"];
+        }
+
+        if (obj.definition.description !== undefined) {
+            if (obj.definition.description["und"] !== undefined) {
+                return truncateString(obj.definition.description["und"], 48);
+            }
+            return truncateString(obj.definition.description["en-US"], 48);
+        }
+    }
+    return obj.id;
+}
+
+function truncateString(str, length) {
+    if (str == null || str.length < 4 || str.length <= length) {
+        return str;
+    }
+    return str.substr(0, length - 3) + '...';
+}
+
 function RenderStatements(xhr){
 	var statementsResult = JSON.parse(xhr.responseText);
     var statements = statementsResult.statements;
@@ -135,18 +194,12 @@ function RenderStatements(xhr){
 			dt = new Date(Date.UTC(aDate[1], aDate[2]-1, aDate[3], aDate[4], aDate[5], aDate[6]));  
 			stmtStr += "<td class='date'>"+ dt.toLocaleDateString() + " " + dt.toLocaleTimeString()  +"</td>";
 
-			var name = (statements[i].actor.name != undefined) ? statements[i].actor.name : statements[i].actor.mbox;
-			stmtStr += "<td > <span class='actor'>"+ name +"</span>";
+			stmtStr += "<td > <span class='actor'>"+ getActorName(statements[i].actor) +"</span>";
 			
-			if (statements[i].verb.display !== undefined && statements[i].verb.display !== ""){
-				verb = statements[i].verb.display["en-US"];
-			}
-			else {
-				verb = statements[i].verb.id;
-			}
+			var verb = getVerb(statements[i].verb);
 			
 			
-			var obj = statements[i].object.id;
+			var obj = getTargetDesc(statements[i].object);
 			if (statements[i].object.definition != undefined){
 	            var activityType = statements[i].object.definition.type;
 				if (activityType != undefined && (activityType == "question" || activityType == "interaction")){
