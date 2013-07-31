@@ -250,6 +250,9 @@ function RenderStatements(xhr){
 				
 				
 			}
+			else{
+				stmtStr += "<span class='verb'>"+ verb +"</span><span class='object'>"+ obj +"</span>";
+			}
 			
 			
 			
