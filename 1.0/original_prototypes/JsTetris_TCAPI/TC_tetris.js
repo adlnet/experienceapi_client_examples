@@ -212,17 +212,10 @@ function tc_addScoreToLeaderBoard(newScoreObj, attemptCount){
 		HighScoresArray.splice(highScorePos, 0, newScoreObj);
 		if (HighScoresArray.length>15) HighScoresArray.pop();
 
-        //Use this to respect concurrency control in profile API
-        // var lastSha1Hash = null;
-        // if(LastHighScoresStr !== null){
-        //     var digestBytes = Crypto.SHA1(LastHighScoresStr, { asBytes: true });
-        //     var lastSha1Hash = Crypto.util.bytesToHex(digestBytes);
-        // }
-
 		ADL.XAPIWrapper.sendActivityProfile(
             GAME_ID, "profile:highscores", 
             HighScoresArray,
-            ADL.XAPIWrapper.hash(LastHighScoresStr), //lastSha1Hash,
+            ADL.XAPIWrapper.hash(LastHighScoresStr),
             null,
             function(xhr){
                 //If we hit a conflict just try this whole thing again...
