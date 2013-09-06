@@ -70,7 +70,7 @@
 	
 		</style>
 		
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 		<script src="config.js"></script>
 		<script src="base64.js"></script>
 		
@@ -102,7 +102,7 @@
 				$(this).attr('href',$(this).attr('baseref') 
 					+ "endpoint=" + encodeURIComponent(PROTOTYPE_ENDPOINT)
 					+ "&auth=" + encodeURIComponent(PROTOTYPE_AUTH)
-					+ "&agent=" +encodeURIComponent(JSON.stringify(actor)));
+					+ "&actor=" +encodeURIComponent(JSON.stringify(actor)));
 				return true;
 			});
 
@@ -115,7 +115,7 @@
 				$(this).attr('href',$(this).attr('baseref') 
 					+ "endpoint=" + encodeURIComponent(PROTOTYPE_ENDPOINT)
 					+ "&auth=" + encodeURIComponent(PROTOTYPE_AUTH)
-					+ "&agent=" +encodeURIComponent(JSON.stringify(actor)));
+					+ "&actor=" +encodeURIComponent(JSON.stringify(actor)));
 				return true;
 			});
 			
@@ -129,7 +129,7 @@
 				$(this).attr('href',$(this).attr('baseref') 
 					+ "endpoint=" + encodeURIComponent(PROTOTYPE_ENDPOINT)
 					+ "&auth=" + encodeURIComponent(PROTOTYPE_AUTH)
-					+ "&agent=" +encodeURIComponent(JSON.stringify(actor)));
+					+ "&actor=" +encodeURIComponent(JSON.stringify(actor)));
 				return true;
 			});
 			
