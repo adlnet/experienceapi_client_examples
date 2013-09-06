@@ -5,7 +5,9 @@ var actorEmail = "";
 
 var gameId = "";
 
-var GAME_ID = "act:adlnet.gov/JsTetris_TCAPI";
+var GAME_ID = "act:adlnet.gov/JsTetris_xAPI";
+
+conf = ADL.XAPIWrapper.lrs;
 
 $(document).ready(function(){
 
@@ -15,8 +17,8 @@ $(document).ready(function(){
 			$('#tc_actorprompt').hide();
 		} else {
 			TCActive = true;
-            if(tc_lrs !== undefined && tc_lrs.actor !== undefined){
-                var actor = JSON.parse(tc_lrs.actor);
+            if(conf !== undefined && conf.actor !== undefined){
+                var actor = JSON.parse(conf.actor);
                 actorName = actor.name;
                 actorEmail = actor.mbox;
                 
@@ -39,7 +41,7 @@ $(document).ready(function(){
 			actorName = $('#tc_nameInput').val();
 			actorEmail = $('#tc_emailInput').val();
 			
-			tc_lrs.actor = JSON.stringify({"name":actorName, "mbox":"mailto:" + actorEmail})
+			conf.actor = JSON.stringify({"name":actorName, "mbox":"mailto:" + actorEmail})
 			
 			$('#tc_name').text(actorName);
 			$('#tc_email').text(actorEmail);
@@ -77,7 +79,7 @@ function tc_getContext(registrationId){
 
 function tc_sendStatementWithContext(stmt){
     stmt["context"] = tc_getContext(gameId);
-    TCDriver_SendStatement(tc_lrs, stmt);
+    ADL.XAPIWrapper.sendStatement(stmt);
 }
 
 function tc_actor(act){
@@ -93,7 +95,7 @@ function tc_actor(act){
 
 function tc_sendStatment_StartNewGame(){
 	if (TCActive){
-		gameId = _ruuid();
+		gameId = ADL.ruuid();
 		var tcGameObj = {
             'id':GAME_ID,
 			"definition":{
@@ -103,7 +105,7 @@ function tc_sendStatment_StartNewGame(){
             }
         };
         var stmt = {
-			"actor":tc_actor(tc_lrs.actor),
+			"actor":tc_actor(conf.actor),
 			"verb":{"id":"http://adlnet.gov/xapi/verbs/attempted",
 			        "display":{"en-US":"started"}},
 			"object":tcGameObj
@@ -138,7 +140,7 @@ function tc_sendStatment_FinishLevel(level,time,apm,lines,score){
         };
 			
 		var stmt = {
-			"actor":tc_actor(tc_lrs.actor),
+			"actor":tc_actor(conf.actor),
 			"verb":{"id":"http://adlnet.gov/xapi/verbs/passed(to_go_beyond)",
 		            "display":{"en-US":"passed"}},
 			"object":tcGameObj,
@@ -175,7 +177,7 @@ function tc_sendStatment_EndGame(level,time,apm,lines,score){
         };
 
 		var stmt = {
-			"actor":tc_actor(tc_lrs.actor),
+			"actor":tc_actor(conf.actor),
 			"verb":{"id":"http://adlnet.gov/xapi/verbs/completed",
 		            "display":{"en-US":"finished"}},
 			"object":tcGameObj,
@@ -187,9 +189,9 @@ function tc_sendStatment_EndGame(level,time,apm,lines,score){
 			
 		//update high score
 		var newScoreObj = {
-            "actor":tc_actor(tc_lrs.actor),
+            "actor":tc_actor(conf.actor),
 			"score":score,
-			"date":TCDriver_ISODateString(new Date())
+			"date":(new Date()).toISOString()
         };
 		
         tc_addScoreToLeaderBoard(newScoreObj, 0);
@@ -210,17 +212,11 @@ function tc_addScoreToLeaderBoard(newScoreObj, attemptCount){
 		HighScoresArray.splice(highScorePos, 0, newScoreObj);
 		if (HighScoresArray.length>15) HighScoresArray.pop();
 
-        //Use this to respect concurrency control in profile API
-        var lastSha1Hash = null;
-        if(LastHighScoresStr !== null){
-            var digestBytes = Crypto.SHA1(LastHighScoresStr, { asBytes: true });
-            var lastSha1Hash = Crypto.util.bytesToHex(digestBytes);
-        }
-
-		TCDriver_SendActivityProfile(
-            tc_lrs, GAME_ID, "profile:highscores", 
-            JSON.stringify(HighScoresArray),
-            lastSha1Hash,
+		ADL.XAPIWrapper.sendActivityProfile(
+            GAME_ID, "profile:highscores", 
+            HighScoresArray,
+            ADL.XAPIWrapper.hash(LastHighScoresStr),
+            null,
             function(xhr){
                 //If we hit a conflict just try this whole thing again...
                 if(xhr.status == 409 || xhr.status == 412){
@@ -234,12 +230,11 @@ var HighScoresArray;
 var LastHighScoresStr = null;
 
 function tc_InitHighScoresObject(){
-	var lrsHighScoresStr = TCDriver_GetActivityProfile(tc_lrs, GAME_ID, "profile:highscores");
-	if (lrsHighScoresStr === undefined || lrsHighScoresStr === null || lrsHighScoresStr == ""){
+	HighScoresArray = ADL.XAPIWrapper.getActivityProfile(GAME_ID, "profile:highscores");
+	if (HighScoresArray === undefined || HighScoresArray === null || HighScoresArray == ""){
 		HighScoresArray = new Array();
 	} else {
-        LastHighScoresStr = lrsHighScoresStr;
-		HighScoresArray = JSON.parse(lrsHighScoresStr);
+        LastHighScoresStr = JSON.stringify(HighScoresArray);
 	}
 }
 
