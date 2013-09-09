@@ -15,14 +15,14 @@
 		<script type="text/javascript" src="../config.js"></script>
 		<script type="text/javascript" src="scripts/tabs.js"></script>
 		<script type="text/javascript" src="scripts/base64.js"></script>
-		<script type="text/javascript" src="scripts/TCDriver.js"></script>
-		<script type="text/javascript" src="scripts/TinCanViewer.js"></script>
+		<script type="text/javascript" src="scripts/xapiwrapper.js"></script>
+		<script type="text/javascript" src="scripts/XAPIViewer.js"></script>
 
         <script type="text/javascript">
             $(document).ready(function(){
-                TC_VIEWER = new TINCAN.Viewer();
-                TC_VIEWER.pageInitialize();
-                TC_VIEWER.searchStatements();
+            	ADL.XAPIWrapper.changeConfig(Config);
+                ADL.Viewer.pageInitialize();
+                ADL.Viewer.searchStatements();
             });
         </script>
         
@@ -62,7 +62,7 @@
 							<tr>
 								<td><label>Since</label><input id="since" type="text" placeholder="YYYY-MM-ddTHH:mm:ss.SSSZ"></input></td>
 								<td><label>Until</label><input id="until" type="text" placeholder="YYYY-MM-ddTHH:mm:ss.SSSZ"></input></td>
-								<td><label>Registration</label><input id="registration" type="text" placeholder="TinCan Registration ID"></input></td>
+								<td><label>Registration</label><input id="registration" type="text" placeholder="Registration ID"></input></td>
 <!-- 								<td><label>Authoritative Only</label><input id="authoritative" type="checkbox"></input></td>
  -->							</tr>
 							<tr>
