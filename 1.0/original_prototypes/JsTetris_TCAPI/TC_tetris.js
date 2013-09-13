@@ -5,7 +5,7 @@ var actorEmail = "";
 
 var gameId = "";
 
-var GAME_ID = "act:adlnet.gov/JsTetris_xAPI";
+var GAME_ID = "act:adlnet.gov/JsTetris_XAPI";
 
 conf = ADL.XAPIWrapper.lrs;
 
@@ -119,7 +119,7 @@ function tc_sendStatment_FinishLevel(level,time,apm,lines,score){
 	if (TCActive){
 		
 		var tcGameObj = {
-            "id":"act:adlnet.gov/JsTetris_TCAPI/level" + level,
+            "id":"act:adlnet.gov/JsTetris_XAPI/level" + level,
 			"definition":{
 				"type":"type:media",
 				"name":{"en-US":"Js Tetris Level" + level},
