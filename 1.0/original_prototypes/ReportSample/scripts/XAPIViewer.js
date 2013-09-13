@@ -62,7 +62,7 @@ function GetActivityProfile (activityId, profileKey, callbackFunction) {
         // url = url.replace('<profilekey>',encodeURIComponent(profileKey));
         
         // XHR_request(tc_lrs, url, "GET", null, auth, callbackFunction, true);
-        ADL.XAPIWrapper.getActivityProfile(activityId, profileKey, null, callbackFunction);
+        ADL.XAPIWrapper.getActivityProfile(activityId, profileKey, null, callbackFunction, null, true);
 }
 
 function getActorName(actor) {
@@ -239,7 +239,7 @@ function RenderStatements(xhr){
 
 
 function RenderHighScores(xhr){
-    var scores = JSON.parse(xhr.responseText);
+    var scores = (xhr.status == 200)?JSON.parse(xhr.responseText):[];
 
     if (scores.length > 0){
         $("#tetrisHighScoreData").empty();
