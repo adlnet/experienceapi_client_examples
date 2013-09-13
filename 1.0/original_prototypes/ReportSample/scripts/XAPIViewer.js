@@ -16,12 +16,12 @@ $(document).ready(function(){
         GetStatements(25,null,null,RenderStatements, true);
     });
     
-    GetActivityProfile ("act:adlnet.gov/JsTetris_TCAPI", "profile:highscores", RenderHighScores);
-    GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_xAPI",RenderTetrisScoreChart);
+    GetActivityProfile ("act:adlnet.gov/JsTetris_XAPI", "profile:highscores", RenderHighScores);
+    GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_XAPI",RenderTetrisScoreChart);
     $("#refreshHighScores").click(function(){
         $("#tetrisHighScoreData").empty();
-        GetActivityProfile("act:adlnet.gov/JsTetris_TCAPI", "profile:highscores", RenderHighScores);
-        GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_xAPI",RenderTetrisScoreChart);
+        GetActivityProfile("act:adlnet.gov/JsTetris_XAPI", "profile:highscores", RenderHighScores);
+        GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_XAPI",RenderTetrisScoreChart);
     });
 });
 
@@ -50,9 +50,9 @@ function GetStatements (num,verb,activityId,callbackFunction, nextPage, isContex
         if(isContextActivity){
             params["related_activities"] = "true";
         }
+        // XHR_request(tc_lrs, url, "GET", null, auth, callbackFunction);
+        ADL.XAPIWrapper.getStatements(params, null, callbackFunction);
     }
-    // XHR_request(tc_lrs, url, "GET", null, auth, callbackFunction);
-    ADL.XAPIWrapper.getStatements(params, null, callbackFunction);
 }
 
 function GetActivityProfile (activityId, profileKey, callbackFunction) {
