@@ -4,6 +4,6 @@ function Config() {
 	"use strict";
 }
 Config.endpoint = "<TCAPI end point (ending with slash)>";
-Config.authUser = "<account id>";
-Config.authPassword = "<password>";
+Config.user = "<account id>";
+Config.password = "<password>";
 Config.actor = { "mbox":"<learner email>", "name":"<Learner Name>" };

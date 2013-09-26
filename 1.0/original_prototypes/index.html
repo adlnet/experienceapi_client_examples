@@ -84,7 +84,7 @@
             var PROTOTYPE_DEFAULT_NAME = Config.actor.name;
             var PROTOTYPE_DEFAULT_MBOX = Config.actor.mbox;
             var PROTOTYPE_ENDPOINT = Config.endpoint;
-            var PROTOTYPE_AUTH = 'Basic ' + Base64.encode(Config.authUser + ':' + Config.authPassword);
+            var PROTOTYPE_AUTH = 'Basic ' + Base64.encode(Config.user + ':' + Config.password);
 
 			$('#tc_nameInput_golf').val(PROTOTYPE_DEFAULT_NAME);
 			$('#tc_emailInput_golf').val(PROTOTYPE_DEFAULT_MBOX.replace('mailto:',''));
