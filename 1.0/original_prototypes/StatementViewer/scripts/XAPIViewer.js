@@ -14,7 +14,7 @@ Viewer.prototype.getCallback = function(callback){
 
 Viewer.prototype.getAuth = function(){ 
     if(this.auth == null){
-        this.auth = 'Basic ' + Base64.encode(Config.authUser + ':' + Config.authPassword);
+        this.auth = 'Basic ' + Base64.encode(Config.user + ':' + Config.password);
     }
     return this.auth;
 };
