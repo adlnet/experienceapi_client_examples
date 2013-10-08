@@ -76,7 +76,7 @@ function getActorName(actor) {
         return actor.mbox;
     }
     if (actor.account !== undefined) {
-        return actor.account.accountName;
+        return actor.account.name;
     }
     return truncateString(JSON.stringify(actor), 20);
 }
