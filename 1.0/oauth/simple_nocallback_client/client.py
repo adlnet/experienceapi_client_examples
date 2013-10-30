@@ -46,11 +46,11 @@ CALLBACK_URL = 'oob'
 RESOURCE_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/statements')
 
 # key and secret granted by the service provider for this consumer application - same as the MockOAuthDataStore
-CONSUMER_KEY = '8942aa2c-d373-11e2-8445-000c29021d7a'
-CONSUMER_SECRET = 'rpTcDFbAEH'
+CONSUMER_KEY = '<consumer key>'
+CONSUMER_SECRET = '<consumer secret>'
 
 # change this 
-ERROR_FILE = '/home/lou/Desktop/error.html'
+ERROR_FILE = '/home/ubuntu/Desktop/error.html'
 
 class SimpleOAuthClient(oauth.OAuthClient):
 
