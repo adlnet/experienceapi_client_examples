@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<tincan xmlns="http://projecttincan.com/tincan.xsd">
+	<activities>
+		<activity id="act:adlnet.gov/JsTetris_XAPI" type="course">
+			<name>xAPI Tetris Example</name>
+			<description lang="en-US">A game of Tetris</description>
+			<launch lang="en-us">tetris.html</launch>
+		</activity>
+	</activities>
+</tincan>
