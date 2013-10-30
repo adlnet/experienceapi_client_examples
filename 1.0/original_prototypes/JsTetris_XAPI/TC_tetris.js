@@ -100,7 +100,7 @@ function tc_sendStatment_StartNewGame(){
             'id':GAME_ID,
 			"definition":{
 				"type":"type:media",
-				"name":{"en-US":"Js Tetris - Tin Can Prototype"},
+				"name":{"en-US":"Js Tetris - xAPI Prototype"},
 				"description":{"en-US":"A game of tetris."}
             }
         };
@@ -158,7 +158,7 @@ function tc_sendStatment_EndGame(level,time,apm,lines,score){
             "id":GAME_ID,
 			"definition":{
 				"type":"type:media",
-				"name":{"en-US":"Js Tetris - Tin Can Prototype"},
+				"name":{"en-US":"Js Tetris - xAPI Prototype"},
 				"description":{"en-US":"A game of tetris."}
             }
         };
