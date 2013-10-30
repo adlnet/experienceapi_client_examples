@@ -219,7 +219,7 @@ Viewer.prototype.searchStatements = function(){
     queryObj.format = "exact";
 
     var url = this.getEndpoint() + "statements?" + queryObj.toString();
-    $("#TCAPIQueryText").text(url);
+    $("#XAPIQueryText").text(url);
 
     this.getStatements(queryObj.toObj(), this.getCallback(this.renderStatementsHandler));
 };
@@ -428,9 +428,9 @@ Viewer.prototype.pageInitialize = function()
     });
     
     $("#showQuery").click(function(){
-        $("#TCAPIQuery").toggle('slow', function(){
-            var visible = $("#TCAPIQuery").is(":visible");
-            var text = (visible ? "Hide" : "Show") + " TCAPI Query";
+        $("#XAPIQuery").toggle('slow', function(){
+            var visible = $("#XAPIQuery").is(":visible");
+            var text = (visible ? "Hide" : "Show") + " XAPI Query";
             $("#showQuery").html(text);
         });
     });

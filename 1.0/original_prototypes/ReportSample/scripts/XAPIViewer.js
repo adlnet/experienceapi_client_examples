@@ -249,8 +249,9 @@ function RenderHighScores(xhr){
 
     for (var i = 0; i < scores.length ; i++){
         html += "<tr class='highScoreRow'><td class='scoreRank'>" + (i+1) + "</td>";
-        
+
         var name = (scores[i].actor.name != undefined) ? scores[i].actor.name : scores[i].actor.mbox;
+
         html += " <td class='actor'>"+ name +"</td>";
 
         html += " <td class='score'>"+ scores[i].score +"</td>";
@@ -273,16 +274,18 @@ function RenderTetrisScoreChart(xhr){
     var playerScores = new Object();
     var players = new Array();
     var scores = new Array();
+    var emails = new Array();
     var maxScore = 0;
     
     for (var i = 0; i < statements.length ; i++){
         var name = (statements[i].actor.name != undefined) ? statements[i].actor.name : statements[i].actor.mbox;
+        var email = statements[i].actor.mbox;
         
         var score = (statements[i].result != undefined 
             && statements[i].result.score != undefined 
             && statements[i].result.score.raw != undefined) ? statements[i].result.score.raw : 0;
         
-        if (playerScores[name] !== undefined){
+        if (playerScores[name] !== undefined && emails.indexOf(email) > -1){
             if (score > playerScores[name].score){
                 playerScores[name].score = score;
                 playerScores[name].count = 1;
@@ -297,6 +300,7 @@ function RenderTetrisScoreChart(xhr){
             playerScores[name].index = scores.push(score)-1;
             playerScores[name].count = 1;
             players.push(name);
+            emails.push(email);
         }
     }
     
