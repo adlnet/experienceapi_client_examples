@@ -8,7 +8,7 @@ with editing the code, please submit an issue and we'll be happy
 to address it.
 
 xAPI client examples built from the original Tin Can examples from Rustici Software that now implement ADL's [xAPIWrapper](https://github.com/adlnet/xAPIWrapper). 
-The examples are split into two folders, .95 for data compliant to the .95 xAPI specification and 1.0 for data compliant to the current 1.0.1 spec. Read more about the Experience API Spec here.](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI.md)
+The examples are split into two folders, .95 for data compliant to the .95 xAPI specification and 1.0 for data compliant to the current 1.0.1 spec. Read more about the Experience API Spec [here](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI.md).
 
 ### 0.95/
 Contains examples based on the 0.95 version of the Experience API Specification
