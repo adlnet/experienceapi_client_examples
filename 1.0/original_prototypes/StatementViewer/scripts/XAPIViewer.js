@@ -381,7 +381,10 @@ Viewer.prototype.renderStatements = function(statementsResult) {
             stmtStr.push("</td></tr>");
         }
         catch (error) {
-            TCDriver_Log("Error occurred while trying to display statement with id " + stmt.id + ": " + error.message);
+            if(console !== undefined)
+            {
+                console.log("Error occurred while trying to display statement with id " + stmt.id + ": " + error.message);
+            }
         }
     }
     stmtStr.push("</table>");
@@ -395,7 +398,6 @@ Viewer.prototype.renderStatements = function(statementsResult) {
     });
     unwiredDivs.removeClass('unwired');
 };
-
 
 Viewer.prototype.pageInitialize = function()
 {
