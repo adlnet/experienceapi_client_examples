@@ -17,19 +17,19 @@ $(document).ready(function(){
 		TC_GetStatements(25,null,null,RenderStatements, true);
 	});
 	
-	TC_GetActivityProfile ("act:adlnet.gov/JsTetris_TCAPI", "highscores", RenderHighScores);
-	TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_TCAPI",RenderTetrisScoreChart);
+	TC_GetActivityProfile ("act:adlnet.gov/JsTetris_XAPI", "highscores", RenderHighScores);
+	TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_XAPI",RenderTetrisScoreChart);
 	$("#refreshHighScores").click(function(){
 		$("#tetrisHighScoreData").empty();
-		TC_GetActivityProfile("act:adlnet.gov/JsTetris_TCAPI", "highscores", RenderHighScores);
-		TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_TCAPI",RenderTetrisScoreChart);
+		TC_GetActivityProfile("act:adlnet.gov/JsTetris_XAPI", "highscores", RenderHighScores);
+		TC_GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_XAPI",RenderTetrisScoreChart);
 	});
 	
-	// TC_GetStatements(0,null,"adlnet.gov/GolfExample_TCAPI",RenderGolfData);
+	// TC_GetStatements(0,null,"adlnet.gov/GolfExample_XAPI",RenderGolfData);
 	// RequestGolfQuestions();
 	// $("#refreshGolfData").click(function(){
 	// 	$("#golfCourseData").empty();
-	// 	TC_GetStatements(0,null,"adlnet.gov/GolfExample_TCAPI",RenderGolfData);
+	// 	TC_GetStatements(0,null,"adlnet.gov/GolfExample_XAPI",RenderGolfData);
 	// 	$(".golfQuestion").remove();
 	// 	RequestGolfQuestions();
 	// });
@@ -370,7 +370,7 @@ function RenderGolfData(xhr){
 	html += "</table>";
 	
 	$("#golfCourseData").append(html);
-	TC_GetStatements(0,'completed',"act:adlnet.gov/GolfExample_TCAPI/GolfAssessment.html",RenderGolfDataScores);
+	TC_GetStatements(0,'completed',"act:adlnet.gov/GolfExample_XAPI/GolfAssessment.html",RenderGolfDataScores);
 	
 }
 
@@ -406,7 +406,7 @@ function RequestGolfQuestions(){
 	for (var i = 0; i < questions.length ; i++){
 		TC_GetStatements(0,'answered',questions[i],RenderGolfQuestions);
 	}*/
-	TC_GetStatementsWithinContext(0, 'answered', 'act:adlnet.gov/GolfExample_TCAPI', RenderGolfQuestions);
+	TC_GetStatementsWithinContext(0, 'answered', 'act:adlnet.gov/GolfExample_XAPI', RenderGolfQuestions);
 	
 }
 function RenderGolfQuestions(xhr){

@@ -219,7 +219,7 @@ Viewer.prototype.searchStatements = function(){
     queryObj.format = "exact";
 
     var url = this.getEndpoint() + "statements?" + queryObj.toString();
-    $("#TCAPIQueryText").text(url);
+    $("#XAPIQueryText").text(url);
 
     this.getStatements(queryObj.toObj(), this.getCallback(this.renderStatementsHandler));
 };
@@ -264,9 +264,13 @@ Viewer.prototype.renderStatements = function(statementsResult) {
         if (verb === undefined) {
             return "";
         }
-        if (verb.display["en-US"] !== undefined) {
-            return verb.display["en-US"];
+        
+        if (verb.display !== undefined){
+            if (verb.display["en-US"] !== undefined) {
+                return verb.display["en-US"];
+            }            
         }
+
         if (verb.id !== undefined) {
             return verb.id;
         }
@@ -381,7 +385,10 @@ Viewer.prototype.renderStatements = function(statementsResult) {
             stmtStr.push("</td></tr>");
         }
         catch (error) {
-            TCDriver_Log("Error occurred while trying to display statement with id " + stmt.id + ": " + error.message);
+            if(console !== undefined)
+            {
+                console.log("Error occurred while trying to display statement with id " + stmt.id + ": " + error.message);
+            }
         }
     }
     stmtStr.push("</table>");
@@ -395,7 +402,6 @@ Viewer.prototype.renderStatements = function(statementsResult) {
     });
     unwiredDivs.removeClass('unwired');
 };
-
 
 Viewer.prototype.pageInitialize = function()
 {
@@ -428,9 +434,9 @@ Viewer.prototype.pageInitialize = function()
     });
     
     $("#showQuery").click(function(){
-        $("#TCAPIQuery").toggle('slow', function(){
-            var visible = $("#TCAPIQuery").is(":visible");
-            var text = (visible ? "Hide" : "Show") + " TCAPI Query";
+        $("#XAPIQuery").toggle('slow', function(){
+            var visible = $("#XAPIQuery").is(":visible");
+            var text = (visible ? "Hide" : "Show") + " XAPI Query";
             $("#showQuery").html(text);
         });
     });

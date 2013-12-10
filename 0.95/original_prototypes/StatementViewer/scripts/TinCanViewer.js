@@ -235,7 +235,7 @@ TINCAN.Viewer.prototype.searchStatements = function(){
 	queryObj.limit = 25;
 	
 	var url = this.getEndpoint() + "XAPI/statements?" + queryObj.toString();
-	$("#TCAPIQueryText").text(url);
+	$("#XAPIQueryText").text(url);
 
 	this.getStatements(queryObj, this.getCallback(this.renderStatementsHandler));
 };
@@ -455,9 +455,9 @@ TINCAN.Viewer.prototype.pageInitialize = function(){
 	});
 	
 	$("#showQuery").click(function(){
-		$("#TCAPIQuery").toggle('slow', function(){
-			var visible = $("#TCAPIQuery").is(":visible");
-			var text = (visible ? "Hide" : "Show") + " TCAPI Query";
+		$("#XAPIQuery").toggle('slow', function(){
+			var visible = $("#XAPIQuery").is(":visible");
+			var text = (visible ? "Hide" : "Show") + " XAPI Query";
 			$("#showQuery").html(text);
 		});
 	});

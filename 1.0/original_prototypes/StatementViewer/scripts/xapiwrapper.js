@@ -787,8 +787,8 @@ if ( !Date.prototype.toISOString ) {
                   if (obj1 == undefined)
                   {
                     obj1 = new Object();
-                  }
-                    obj1[p] = obj2[p];
+                  }                  
+                  obj1[p] = obj2[p];
                 } 
             } 
             catch(e) 

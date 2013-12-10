@@ -3,7 +3,7 @@
 function Config() {
 	"use strict";
 }
-Config.endpoint = "<TCAPI end point (ending with slash)>";
+Config.endpoint = "<XAPI end point (ending with slash)>";
 Config.authUser = "<account id>";
 Config.authPassword = "<password>";
 Config.actor = { "mbox":"<learner email>", "name":"<Learner Name>" };
