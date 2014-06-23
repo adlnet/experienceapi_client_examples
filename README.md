@@ -7,6 +7,7 @@ make changes and submit pull requests. If you're not comfortable
 with editing the code, please submit an issue and we'll be happy 
 to address it.
 
+
 The xAPI client examples are built from the original Tin Can examples from Rustici Software that now implement ADL's [xAPIWrapper](https://github.com/adlnet/xAPIWrapper). 
 The examples are split into two folders, .95 for data compliant to the .95 xAPI specification and 1.0 for data compliant to the current 1.0.1 spec. Read more about the Experience API Spec [here](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI.md).
 
@@ -35,6 +36,13 @@ to the ADL LRS
 
 ## config.js
 The 0.95 and 1.0 folders each contain a config.js.template. It is used to configure the LRS endpoint and user information. To use, rename the file to just config.js.
+=======
+xAPI client examples built from the original Tin Can examples from Rustici Software that now implement ADL's [xAPIWrapper](https://github.com/adlnet/xAPIWrapper). 
+The examples are split into two folders, .95 for data compliant to the .95 xAPI specification and 1.0 for data compliant to the current 1.0.1 spec. Read more about the Experience API Spec here.](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI.md)
+
+## config.js
+config.js is used to configure the LRS endpoint and user information. This file needs created. To do this, edit config.js.template
+
 
 example:
 ```javascript
