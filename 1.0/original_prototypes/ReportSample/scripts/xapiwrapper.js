@@ -25,6 +25,22 @@ if ( !Date.prototype.toISOString ) {
   }() );
 }
 
+// shim for old-style Base64 lib
+function toBase64(text){
+  if(CryptoJS && CryptoJS.enc.Base64) 
+    return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Latin1.parse(text));
+  else
+    return Base64.encode(text);
+}
+
+// shim for old-style crypto lib
+function toSHA1(text){
+  if(CryptoJS && CryptoJS.SHA1)
+    return CryptoJS.SHA1(text).toString();
+  else
+    return Crypto.util.bytesToHex( Crypto.SHA1(text,{asBytes:true}) );
+}
+
 (function(ADL){
     log.debug = true;
     // config object used w/ url params to configure the lrs object
@@ -35,7 +51,7 @@ if ( !Date.prototype.toISOString ) {
         conf['endpoint'] = "http://localhost:8000/xapi/";
         try
         {
-            conf['auth'] = "Basic " + Base64.encode('tom:1234'); 
+            conf['auth'] = "Basic " + toBase64('tom:1234'); 
         }
         catch (e)
         {
@@ -59,7 +75,7 @@ if ( !Date.prototype.toISOString ) {
      */
     XAPIWrapper = function(config, verifyxapiversion)
     {
-        this.lrs = getLRSObject(config);
+        this.lrs = getLRSObject(config || {});
         if (this.lrs.user && this.lrs.password)
             updateAuth(this.lrs, this.lrs.user, this.lrs.password);
         this.base = getbase(this.lrs.endpoint);
@@ -75,7 +91,7 @@ if ( !Date.prototype.toISOString ) {
         }
 
         function updateAuth(obj, username, password){
-            obj.auth = "Basic " + Base64.encode(username + ":" + password);
+            obj.auth = "Basic " + toBase64(username + ":" + password);
         }
 
         if (verifyxapiversion && testConfig.call(this))
@@ -123,8 +139,7 @@ if ( !Date.prototype.toISOString ) {
             if (!tohash) return null;
             try
             {
-                var digestBytes = Crypto.SHA1(tohash, { asBytes: true });
-                return Crypto.util.bytesToHex(digestBytes);
+                return toSHA1(tohash);
             }
             catch(e)
             {
@@ -153,9 +168,6 @@ if ( !Date.prototype.toISOString ) {
 
     // This wrapper is based on the Experience API Spec version:
     XAPIWrapper.prototype.xapiVersion = "1.0.1";
-
-    // This wrapper was built on:
-    XAPIWrapper.prototype.build = "2013-12-09T20:00Z";
 
     /*
      * prepareStatement
@@ -788,7 +800,7 @@ if ( !Date.prototype.toISOString ) {
                   {
                     obj1 = new Object();
                   }
-                  obj1[p] = obj2[p];
+                    obj1[p] = obj2[p];
                 } 
             } 
             catch(e) 
@@ -796,7 +808,7 @@ if ( !Date.prototype.toISOString ) {
               if (obj1 == undefined)
               {
                 obj1 = new Object();
-              }
+              }              
               // Property in destination object not set; create it and set its value.
               obj1[p] = obj2[p];
             }
@@ -814,7 +826,7 @@ if ( !Date.prototype.toISOString ) {
         var qsVars, prop;
         
         qsVars = parseQueryString();
-        if (qsVars !== undefined) {
+        if (qsVars !== undefined && Object.keys(qsVars).length !== 0) {
             for (var i = 0; i<lrsProps.length; i++){
                 prop = lrsProps[i];
                 if (qsVars[prop]){
@@ -822,8 +834,9 @@ if ( !Date.prototype.toISOString ) {
                     delete qsVars[prop];
                 }
             }
-            
-            lrs.extended = qsVars;
+            if (Object.keys(qsVars).length !== 0) {
+              lrs.extended = qsVars;
+            }
 
             lrs = mergeRecursive(config, lrs);
         }
@@ -1032,16 +1045,27 @@ if ( !Date.prototype.toISOString ) {
                 var notFoundOk = (ignore404 && xhr.status === 404);
                 if (xhr.status === undefined || (xhr.status >= 200 && xhr.status < 400) || notFoundOk) {
                     if (callback) {
-                        callback(xhr, callbackargs);
+                        if(callbackargs){
+                            callback(xhr, callbackargs);
+                        }
+                        else {
+                            try {
+                                var body = JSON.parse(xhr.responseText);
+                                callback(xhr,body);
+                            }
+                            catch(e){
+                                callback(xhr,xhr.responseText);
+                            }
+                        }
                     } else {
                         result = xhr;
                         return xhr;
                     }
                 } else {
                     try {
-                        alert("There was a problem communicating with the Learning Record Store. ( " 
-                            + xhr.status + " | " + xhr.response+ " )" + xhr.url);
-                    } catch (ex) {alert (ex.toString());}
+                        console.warn("There was a problem communicating with the Learning Record Store. ( " 
+                            + xhr.status + " | " + xhr.response+ " )" + url);
+                    } catch (ex) {console.warn(ex.toString());}
                     //throw new Error("debugger");
                     result = xhr;
                     return xhr;
@@ -1076,5 +1100,5 @@ if ( !Date.prototype.toISOString ) {
     };
 
     ADL.XAPIWrapper = new XAPIWrapper(Config, false);
-    
+
 }(window.ADL = window.ADL || {}));
