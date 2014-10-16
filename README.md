@@ -33,6 +33,11 @@ NOTE: The index page (index.html) references JQuery from Google CDN. Hard coding
 Contains examples using [OAuth 1.0a](https://tools.ietf.org/html/rfc5849) to connect 
 to the ADL LRS
 
+### 1.0/oauth/oauth2/
+Contains examples using [OAuth 2.0]() to connect to the ADL LRS. To run:
+
+`python oauth2_example.py`
+
 ## config.js
 The 0.95 and 1.0 folders each contain a config.js.template. It is used to configure the LRS endpoint and user information. To use, rename the file to just config.js.
 
