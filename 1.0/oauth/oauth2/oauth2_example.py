@@ -55,15 +55,17 @@ ENCODING_UTF8 = 'utf-8'
 SERVER_PORT = 8099
 REDIRECT_URL = 'http://localhost:%s/login/lrs' % SERVER_PORT
 
-LRS_ENDPOINT = 'http://localhost:8000/xapi/'
+# Include /xapi/ at the end
+LRS_ENDPOINT = '<base endpoint>'
+
 LRS_AUTH_ENDPOINT = LRS_ENDPOINT + 'oauth2/authorize'
 LRS_ACCESS_TOKEN_ENDPOINT = LRS_ENDPOINT + 'oauth2/access_token'
 LRS_RESOURCE_ENDPOINT = LRS_ENDPOINT + 'statements'
 
 # SCOPE is a space delimited string
-SCOPE = 'statements/read/mine statements/write'
-CLIENT_ID = '6ecc019dc71e36c9afd9'
-CLIENT_SECRET = 'd3b1c299e55151f440132b365b859c10f590c1a8'
+SCOPE = '<scope>'
+CLIENT_ID = '<client_id>'
+CLIENT_SECRET = '<client_secret>'
 
 logging.basicConfig(format='%(message)s')
 l = logging.getLogger(__name__)
@@ -310,6 +312,7 @@ class Handler(BaseHTTPRequestHandler):
         c = Client(auth_endpoint=LRS_AUTH_ENDPOINT,
             client_id=CLIENT_ID)
         self.send_header('Location', c.auth_uri(
+            state='somestate',
             scope=SCOPE,
             redirect_uri=REDIRECT_URL))
         self.end_headers()
