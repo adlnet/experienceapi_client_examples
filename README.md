@@ -34,7 +34,7 @@ Contains examples using [OAuth 1.0a](https://tools.ietf.org/html/rfc5849) to con
 to the ADL LRS
 
 ### 1.0/oauth/oauth2/
-Contains examples using [OAuth 2.0]() to connect to the ADL LRS. To run:
+Contains examples using [OAuth 2.0](https://tools.ietf.org/html/rfc6749) to connect to the ADL LRS. To run:
 
 `python oauth2_example.py`
 
