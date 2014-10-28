@@ -31,6 +31,7 @@ tom c changed stuff to work with the ADL LRS
 import time
 import oauth.oauth as oauth
 import requests
+from urllib import urlencode
 
 # settings for the local test consumer
 LOCAL = True
@@ -44,10 +45,14 @@ ACCESS_TOKEN_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/OAuth/token')
 AUTHORIZATION_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/OAuth/authorize')
 CALLBACK_URL = 'oob'
 RESOURCE_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/statements')
+# Set to True if want to include a scope - else defaulted
+INCLUDE_SCOPE = False
+# SCOPE is a space delimited string
+SCOPE = {"scope": "statements/write define statements/read/mine"}
 
 # key and secret granted by the service provider for this consumer application - same as the MockOAuthDataStore
-CONSUMER_KEY = '<consumer key>'
-CONSUMER_SECRET = '<consumer secret>'
+CONSUMER_KEY = '66c2d9beb3f645a095832319ab92dff0'
+CONSUMER_SECRET = 'S70uU4RCJkChlhdP'
 
 # change this 
 ERROR_FILE = '/home/ubuntu/Desktop/error.html'
@@ -60,7 +65,11 @@ class SimpleOAuthClient(oauth.OAuthClient):
         self.authorization_url = authorization_url
 
     def fetch_request_token(self, oauth_request):
-        response = requests.get(oauth_request.to_url(), headers=oauth_request.to_header(), verify=False)
+        path = oauth_request.to_url()
+        if INCLUDE_SCOPE:
+            path = path + "&%s" % urlencode(SCOPE)
+        
+        response = requests.get(path, headers=oauth_request.to_header(), verify=False)
         if response.status_code != 200:
             print "Fail: %s" % response.status_code
             f = open(ERROR_FILE, 'w')

@@ -12,7 +12,8 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTH
 DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
-
+import requests
+import json
 import logging
 import sys, os
 from functools import wraps
@@ -56,16 +57,16 @@ SERVER_PORT = 8099
 REDIRECT_URL = 'http://localhost:%s/login/lrs' % SERVER_PORT
 
 # Include /xapi/ at the end
-LRS_ENDPOINT = '<base endpoint>'
+LRS_ENDPOINT = 'http://localhost:8000/xapi/'
 
 LRS_AUTH_ENDPOINT = LRS_ENDPOINT + 'oauth2/authorize'
 LRS_ACCESS_TOKEN_ENDPOINT = LRS_ENDPOINT + 'oauth2/access_token'
 LRS_RESOURCE_ENDPOINT = LRS_ENDPOINT + 'statements'
 
 # SCOPE is a space delimited string
-SCOPE = '<scope>'
-CLIENT_ID = '<client_id>'
-CLIENT_SECRET = '<client_secret>'
+SCOPE = 'all'
+CLIENT_ID = 'e14d98d642250ee72884'
+CLIENT_SECRET = '4909182f5493a34b166d7633b76e283c77955f52'
 
 logging.basicConfig(format='%(message)s')
 l = logging.getLogger(__name__)
@@ -331,6 +332,14 @@ class Handler(BaseHTTPRequestHandler):
         self.dump_client(c)        
         d = c.request(headers={'Authorization': "Bearer " + str(c.access_token), 'content-type': 'application/json', 'X-Experience-API-Version': '1.0.2'})
         self.dump_response(d)
+        
+        headers={'Authorization': "Bearer " + str(c.access_token), 'content-type': 'application/json', 'X-Experience-API-Version': '1.0.2'}
+
+        post_payload = json.dumps({"actor":{"mbox":"mailto:oauth2@test.com", "name":"Tester"}, "verb":{"id":"http://adlnet.gov/xapi/verbs/attempted"},
+            "object":{"id":"http://onlyatest.com"}})
+        
+        post_resp = requests.post(LRS_RESOURCE_ENDPOINT, data=post_payload, headers=headers, verify=False)
+        print post_resp.content
 
 if __name__ == '__main__':
     l.setLevel(1)
