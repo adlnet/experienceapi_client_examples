@@ -17,6 +17,7 @@ import json
 import logging
 import sys, os
 import oauth.oauth as oauth
+import memcache
 from functools import wraps
 from datetime import datetime, timedelta
 from time import mktime
@@ -67,103 +68,80 @@ LRS_RESOURCE_ENDPOINT = LRS_ENDPOINT + 'statements'
 
 # SCOPE is a space delimited string
 SCOPE = 'all'
-CLIENT_ID = 'e14d98d642250ee72884'
-CLIENT_SECRET = '4909182f5493a34b166d7633b76e283c77955f52'
+CLIENT_ID = 'c39b6fca008942558999a6f545c5c813'
+CLIENT_SECRET = '8gng4WcneOo2Skry'
+
+SIGNATURE_METHOD = oauth.OAuthSignatureMethod_PLAINTEXT()
+
 
 logging.basicConfig(format='%(message)s')
 l = logging.getLogger(__name__)
 
-class SimpleOAuthClient(oauth.OAuthClient):
-    def __init__(self, request_token_url='', access_token_url='', authorization_url=''):
-        self.request_token_url = request_token_url
-        self.access_token_url = access_token_url
-        self.authorization_url = authorization_url
+mc = memcache.Client(['127.0.0.1:11211'], debug=0)
 
-    def fetch_request_token(self, oauth_request):
+class Client(object):
+    """ OAuth 1.0 client object
+    """
+
+    def __init__(self, request_endpoint=None, auth_endpoint=None, token_endpoint=None,
+        resource_endpoint=None, client_id=None, client_secret=None, refresh_token=None,
+        access_token=None, oauth_verifier=None):
+        """ Instantiates a `Client` to authorize and authenticate a user """
+        self.request_endpoint = request_endpoint
+        self.auth_endpoint = auth_endpoint
+        self.token_endpoint = token_endpoint
+        self.resource_endpoint = resource_endpoint
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.refresh_token = None
+        self.access_token = None
+        self.oauth_verifier = oauth_verifier
+
+    def request_uri(self, oauth_callback, scope=None):
+
+        """  Builds the auth URI for the authorization endpoint  """
+        
+        if scope is not None:
+            scope = {'scope': scope}
+
+        consumer = oauth.OAuthConsumer(CLIENT_ID, CLIENT_SECRET)
+        # TODO - This should be a POST?
+        oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, callback=oauth_callback, http_url=self.request_endpoint)
+        oauth_request.sign_request(SIGNATURE_METHOD, consumer, None)
+
+        path = oauth_request.to_url()
+        if scope:
+            path = path + "&%s" % urlencode(scope)
+        return path
+
+    def auth_uri(self, oauth_token, **kwargs):
+
+        """  Builds the auth URI for the authorization endpoint  """
+        
+        kwargs.update({
+            'oauth_token': oauth_token,
+        })
+        return '%s?%s' % (self.auth_endpoint, urlencode(kwargs))
+
+    def fetch_access_token(self, token):
+        consumer = oauth.OAuthConsumer(CLIENT_ID, CLIENT_SECRET)
+        
+        oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, token=token, verifier=self.oauth_verifier,
+            http_url=LRS_ACCESS_TOKEN_ENDPOINT)
+        oauth_request.sign_request(SIGNATURE_METHOD, consumer, token)
+
         response = requests.get(oauth_request.to_url(), headers=oauth_request.to_header(), verify=False)
-        if response.status_code != 200:
-            raise Exception("something didn't work right\nresponse: %s -- %s" % (response.status_code, response.content))
-        return oauth.OAuthToken.from_string(response.content)
 
-    def fetch_access_token(self, oauth_request):
-        response = requests.get(oauth_request.to_url(), headers=oauth_request.to_header(), verify=False)        
-        if response.status_code != 200:
-            raise Exception("something didn't work right\nresponse: %s -- %s" % (response.status_code, response.content))
-        return oauth.OAuthToken.from_string(response.content)
-
-    def authorize_token(self, oauth_request):
-        response = requests.get(oauth_request.to_url(), allow_redirects=True, verify=False)
-        
-        # bankin on a redirect
-        if response.status_code != 200:
-            if response.status_code > 300 and response.status_code < 400:
-                newurl = response.headers['location']
-                import urlparse, cgi
-                parts = urlparse.urlparse(newurl)[2:]
-            
-                print parts[2]
-                u = urlparse.parse_qs(parts[2])
-                return 'http://example.com?oauth_verifier=%s' % raw_input("go to %s, verify, enter PIN here: " % u['next'])
-            else:
-                raise Exception("something didn't work right\nresponse: %s -- %s" % (response.status_code, response.content))
-            
-        return response.content
-
-    def access_resource(self, oauth_request):
-        headers = oauth_request.to_header()
-        headers['X-Experience-API-Version']= '1.0'
-        
-        response = requests.get(oauth_request.get_normalized_http_url(), headers=headers, verify=False)
-        if response.status_code == 200 or response.status_code == 204:
-            return response.content
-        else:
-            raise Exception("response didn't come back right\nresponse:%s -- %s" % (response.status_code, response.content))
-
-def transport_headers(url, access_token, data=None, method=None, headers=None):
-    try:
-        req = Request(url, data=data, method=method)
-    except TypeError:
-        req = Request(url, data=data)
-        req.get_method = lambda: method
-
-    add_headers = {'Authorization': 'Bearer {0}'.format(access_token)}
-    if headers is not None:
-        add_headers.update(headers)
-
-    req.headers.update(add_headers)
-    return req
-
-def transport_query(url, access_token, data=None, method=None, headers=None):
-    parts = urlsplit(url)
-    query = dict(parse_qsl(parts.query))
-    query.update({
-        'access_token': access_token
-    })
-    url = urlunsplit((parts.scheme, parts.netloc, parts.path,
-        urlencode(query), parts.fragment))
-    try:
-        req = Request(url, data=data, method=method)
-    except TypeError:
-        req = Request(url, data=data)
-        req.get_method = lambda: method
-
-    if headers is not None:
-        req.headers.update(headers)
-
-    return req
-
-def _default_parser(data):
-    try:
-        return loads(data)
-    except ValueError:
-        return dict(parse_qsl(data))
-
+        resp_list = response.content.split('&')
+        oauth_token = resp_list[1].split('=')[1]
+        oauth_token_secret = resp_list[0].split('=')[1]
+        return oauth_token, oauth_token_secret
 
 class Handler(BaseHTTPRequestHandler):
     route_handlers = {
         '/': 'handle_root',
         '/login/lrs': 'handle_lrs_login',
-        '/oauth1/lrs': 'handle_lrs'
+        '/oauth/lrs': 'handle_lrs'
     }
 
     def do_GET(self):
@@ -183,87 +161,61 @@ class Handler(BaseHTTPRequestHandler):
             return func(self, *args, **kwargs)
         return wrapper
 
+    def dump_data(self, data):
+        self.wfile.write(data)
+
     @success
     def handle_root(self, data):
         self.wfile.write('''
-            login with: <a href='/oauth1/lrs'>LRS</a>
+            login with: <a href='/oauth/lrs'>LRS</a>
         '''.encode(ENCODING_UTF8))
-
-    def dump_response(self, data):
-        for k in data:
-            self.wfile.write('{0}: {1}<br>'.format(k,
-                data[k]).encode(ENCODING_UTF8))
-
-    def dump_client(self, c):
-        for k in c.__dict__:
-            self.wfile.write('{0}: {1}<br>'.format(k,
-                c.__dict__[k]).encode(ENCODING_UTF8))
-        self.wfile.write('<hr/>'.encode(ENCODING_UTF8))
 
     def handle_lrs(self, data):
         self.send_response(302)
-        
-        consumer = SimpleOAuthClient(LRS_INITIATE_ENDPOINT, LRS_ACCESS_TOKEN_ENDPOINT,
-            LRS_AUTH_ENDPOINT)
-        client = oauth.OAuthConsumer(CLIENT_ID, CLIENT_SECRET)        
-        signature_method_plaintext = oauth.OAuthSignatureMethod_PLAINTEXT()
-        signature_method_hmac_sha1 = oauth.OAuthSignatureMethod_HMAC_SHA1()
-
-        oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer,
-            callback=CALLBACK_URL, http_url=client.request_token_url)
-        oauth_request.sign_request(signature_method_plaintext, consumer, None)
-
-        token = client.fetch_request_token(oauth_request)
-        oauth_request = oauth.OAuthRequest.from_token_and_callback(token=token, http_url=client.authorization_url)
-        response = client.authorize_token(oauth_request)
-        
+        c = Client(request_endpoint=LRS_INITIATE_ENDPOINT,
+            auth_endpoint=LRS_AUTH_ENDPOINT,
+            client_id=CLIENT_ID)
 
 
+        # TODO - should be a POST?
+        response = requests.get(c.request_uri(oauth_callback=REDIRECT_URL, scope=SCOPE), verify=False)
+        # TODO - HAVE TO SAVE THIS FOR THE REQUEST TOKEN SECRET FOR GETTING THE ACCESS TOKEN IN handle_lrs_login, better way of doing this?
+        handler_token = oauth.OAuthToken.from_string(response.content)
+        mc.set("token", handler_token)
+
+
+        # Using requests since spec doesn't say where token/secret/confirmed should be sent back to
+        # Is that doable with this?
+        # self.send_header('Location', c.request_uri(
+        #     oauth_callback=REDIRECT_URL,
+        #     scope=SCOPE))
+        # self.end_headers()
 
         self.send_header('Location', c.auth_uri(
-            state='somestate',
-            scope=SCOPE,
-            redirect_uri=REDIRECT_URL))
+            oauth_token=handler_token.key))
         self.end_headers()
 
     @success
-    def handle_lrs_login(self, data):    
-        oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, token=token, verifier=verifier, http_url=client.access_token_url)
-        oauth_request.sign_request(signature_method_plaintext, consumer, token)
-        token = client.fetch_access_token(oauth_request)
-
-        oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, token=token, http_method='GET', http_url=RESOURCE_URL)
-        oauth_request.sign_request(signature_method_hmac_sha1, consumer, token)
-
-        resource = client.access_resource(oauth_request)
-        print resource
-
-
-
-
-
-
-        c = Client(token_endpoint=LRS_ACCESS_TOKEN_ENDPOINT,
+    def handle_lrs_login(self, data):
+        c = Client(request_endpoint=LRS_INITIATE_ENDPOINT,
+            token_endpoint=LRS_ACCESS_TOKEN_ENDPOINT,
             resource_endpoint=LRS_RESOURCE_ENDPOINT,
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
-            token_transport=transport_headers)
-        
-        c.request_token(code=data['code'],
-            redirect_uri=REDIRECT_URL)
+            oauth_verifier=data['oauth_verifier'])
 
-        self.dump_client(c)        
+        handler_token = mc.get("token")
+        access_token, access_token_secret = c.fetch_access_token(token=handler_token)
+        access_token = oauth.OAuthToken(access_token, access_token_secret)
         
-        d = c.request(headers={'Authorization': "Bearer " + str(c.access_token), 'content-type': 'application/json', 'X-Experience-API-Version': '1.0.2'})
-        self.dump_response(d)
-        
-        headers={'Authorization': "Bearer " + str(c.access_token), 'content-type': 'application/json', 'X-Experience-API-Version': '1.0.2'}
+        consumer = oauth.OAuthConsumer(CLIENT_ID, CLIENT_SECRET)
+        oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, token=access_token, http_method='GET', http_url=LRS_RESOURCE_ENDPOINT)
+        oauth_request.sign_request(SIGNATURE_METHOD, consumer, access_token)
 
-        post_payload = json.dumps({"actor":{"mbox":"mailto:oauth1@test.com", "name":"Tester"}, "verb":{"id":"http://adlnet.gov/xapi/verbs/attempted"},
-            "object":{"id":"http://onlyatest.com"}})
-        
-        post_resp = requests.post(LRS_RESOURCE_ENDPOINT, data=post_payload, headers=headers, verify=False)
-        print post_resp.content
+        headers = oauth_request.to_header()
+        headers['X-Experience-API-Version']= '1.0'
+        response = requests.get(oauth_request.get_normalized_http_url(), headers=headers, verify=False)
+        self.dump_data(response.content)
 
 if __name__ == '__main__':
     l.setLevel(1)

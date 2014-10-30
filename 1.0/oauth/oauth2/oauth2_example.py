@@ -64,9 +64,9 @@ LRS_ACCESS_TOKEN_ENDPOINT = LRS_ENDPOINT + 'oauth2/access_token'
 LRS_RESOURCE_ENDPOINT = LRS_ENDPOINT + 'statements'
 
 # SCOPE is a space delimited string
-SCOPE = 'all'
-CLIENT_ID = 'e14d98d642250ee72884'
-CLIENT_SECRET = '4909182f5493a34b166d7633b76e283c77955f52'
+SCOPE = 'statements/write statements/read/mine define'
+CLIENT_ID = 'fb4be5c795c8388aa166'
+CLIENT_SECRET = 'a128fc2847de5ae822c29dc13ccdffbbb2328ae1'
 
 logging.basicConfig(format='%(message)s')
 l = logging.getLogger(__name__)
@@ -308,6 +308,10 @@ class Handler(BaseHTTPRequestHandler):
                 c.__dict__[k]).encode(ENCODING_UTF8))
         self.wfile.write('<hr/>'.encode(ENCODING_UTF8))
 
+    def dump_data(self, data):
+        self.wfile.write(data)
+
+
     def handle_lrs(self, data):
         self.send_response(302)
         c = Client(auth_endpoint=LRS_AUTH_ENDPOINT,
@@ -339,7 +343,7 @@ class Handler(BaseHTTPRequestHandler):
             "object":{"id":"http://onlyatest.com"}})
         
         post_resp = requests.post(LRS_RESOURCE_ENDPOINT, data=post_payload, headers=headers, verify=False)
-        print post_resp.content
+        self.dump_data(post_resp.content)
 
 if __name__ == '__main__':
     l.setLevel(1)

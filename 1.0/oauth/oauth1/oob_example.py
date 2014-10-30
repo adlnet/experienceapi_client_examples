@@ -45,6 +45,7 @@ ACCESS_TOKEN_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/OAuth/token')
 AUTHORIZATION_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/OAuth/authorize')
 CALLBACK_URL = 'oob'
 RESOURCE_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/statements')
+
 # Set to True if want to include a scope - else defaulted
 INCLUDE_SCOPE = False
 # SCOPE is a space delimited string
