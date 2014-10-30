@@ -13,22 +13,14 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 import requests
-import json
 import logging
-import sys, os
 import oauth.oauth as oauth
 import memcache
-from functools import wraps
-from datetime import datetime, timedelta
-from time import mktime
 
 try:
     from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-    from ConfigParser import ConfigParser
-    from urlparse import urlparse, urlsplit, urlunsplit, parse_qsl
+    from urlparse import urlparse, parse_qsl
     from urllib import urlencode
-    from urllib2 import Request, urlopen
-    from io import BytesIO 
 
     # monkeypatch httpmessage
     from httplib import HTTPMessage
@@ -51,11 +43,9 @@ except ImportError:
     from io import BytesIO 
     from urllib.request import Request, urlopen
 
-from gzip import GzipFile
-from json import loads
-
 ENCODING_UTF8 = 'utf-8'
 SERVER_PORT = 8099
+# Redirect URL to send LRS back here
 REDIRECT_URL = 'http://localhost:%s/login/lrs' % SERVER_PORT
 
 # Include /xapi/ at the end
@@ -68,8 +58,8 @@ LRS_RESOURCE_ENDPOINT = LRS_ENDPOINT + 'statements'
 
 # SCOPE is a space delimited string
 SCOPE = 'all'
-CLIENT_ID = 'c39b6fca008942558999a6f545c5c813'
-CLIENT_SECRET = '8gng4WcneOo2Skry'
+CLIENT_ID = '<client id>'
+CLIENT_SECRET = '<client secret>'
 
 SIGNATURE_METHOD = oauth.OAuthSignatureMethod_PLAINTEXT()
 
@@ -105,7 +95,6 @@ class Client(object):
             scope = {'scope': scope}
 
         consumer = oauth.OAuthConsumer(CLIENT_ID, CLIENT_SECRET)
-        # TODO - This should be a POST?
         oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, callback=oauth_callback, http_url=self.request_endpoint)
         oauth_request.sign_request(SIGNATURE_METHOD, consumer, None)
 
@@ -176,20 +165,9 @@ class Handler(BaseHTTPRequestHandler):
             auth_endpoint=LRS_AUTH_ENDPOINT,
             client_id=CLIENT_ID)
 
-
-        # TODO - should be a POST?
         response = requests.get(c.request_uri(oauth_callback=REDIRECT_URL, scope=SCOPE), verify=False)
-        # TODO - HAVE TO SAVE THIS FOR THE REQUEST TOKEN SECRET FOR GETTING THE ACCESS TOKEN IN handle_lrs_login, better way of doing this?
         handler_token = oauth.OAuthToken.from_string(response.content)
         mc.set("token", handler_token)
-
-
-        # Using requests since spec doesn't say where token/secret/confirmed should be sent back to
-        # Is that doable with this?
-        # self.send_header('Location', c.request_uri(
-        #     oauth_callback=REDIRECT_URL,
-        #     scope=SCOPE))
-        # self.end_headers()
 
         self.send_header('Location', c.auth_uri(
             oauth_token=handler_token.key))

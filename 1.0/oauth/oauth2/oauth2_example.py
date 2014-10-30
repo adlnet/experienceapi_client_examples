@@ -65,8 +65,8 @@ LRS_RESOURCE_ENDPOINT = LRS_ENDPOINT + 'statements'
 
 # SCOPE is a space delimited string
 SCOPE = 'statements/write statements/read/mine define'
-CLIENT_ID = 'fb4be5c795c8388aa166'
-CLIENT_SECRET = 'a128fc2847de5ae822c29dc13ccdffbbb2328ae1'
+CLIENT_ID = '<client id>'
+CLIENT_SECRET = '<client secret>'
 
 logging.basicConfig(format='%(message)s')
 l = logging.getLogger(__name__)

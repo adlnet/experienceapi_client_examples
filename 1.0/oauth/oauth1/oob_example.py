@@ -31,6 +31,8 @@ tom c changed stuff to work with the ADL LRS
 import time
 import oauth.oauth as oauth
 import requests
+import urlparse
+import cgi
 from urllib import urlencode
 
 # settings for the local test consumer
@@ -52,8 +54,8 @@ INCLUDE_SCOPE = False
 SCOPE = {"scope": "statements/write define statements/read/mine"}
 
 # key and secret granted by the service provider for this consumer application - same as the MockOAuthDataStore
-CONSUMER_KEY = '66c2d9beb3f645a095832319ab92dff0'
-CONSUMER_SECRET = 'S70uU4RCJkChlhdP'
+CONSUMER_KEY = '<consumer key>'
+CONSUMER_SECRET = '<consumer secret>'
 
 # change this 
 ERROR_FILE = '/home/ubuntu/Desktop/error.html'
@@ -91,7 +93,6 @@ class SimpleOAuthClient(oauth.OAuthClient):
         if response.status_code != 200:
             if response.status_code > 300 and response.status_code < 400:
                 newurl = response.headers['location']
-                import urlparse, cgi
                 parts = urlparse.urlparse(newurl)[2:]
             
                 print parts[2]
@@ -157,7 +158,6 @@ def run_example():
     print 'GOT'
     print response
     #  get the verifier
-    import urlparse, cgi
     query = urlparse.urlparse(response)[4]
     params = cgi.parse_qs(query, keep_blank_values=False)
     verifier = params['oauth_verifier'][0]
