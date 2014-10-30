@@ -31,6 +31,9 @@ tom c changed stuff to work with the ADL LRS
 import time
 import oauth.oauth as oauth
 import requests
+import urlparse
+import cgi
+from urllib import urlencode
 
 # settings for the local test consumer
 LOCAL = True
@@ -44,6 +47,11 @@ ACCESS_TOKEN_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/OAuth/token')
 AUTHORIZATION_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/OAuth/authorize')
 CALLBACK_URL = 'oob'
 RESOURCE_URL = '%s://%s:%s%s' % (SCHEME,SERVER,PORT,'/XAPI/statements')
+
+# Set to True if want to include a scope - else defaulted
+INCLUDE_SCOPE = False
+# SCOPE is a space delimited string
+SCOPE = {"scope": "statements/write define statements/read/mine"}
 
 # key and secret granted by the service provider for this consumer application - same as the MockOAuthDataStore
 CONSUMER_KEY = '<consumer key>'
@@ -60,7 +68,11 @@ class SimpleOAuthClient(oauth.OAuthClient):
         self.authorization_url = authorization_url
 
     def fetch_request_token(self, oauth_request):
-        response = requests.get(oauth_request.to_url(), headers=oauth_request.to_header(), verify=False)
+        path = oauth_request.to_url()
+        if INCLUDE_SCOPE:
+            path = path + "&%s" % urlencode(SCOPE)
+        
+        response = requests.get(path, headers=oauth_request.to_header(), verify=False)
         if response.status_code != 200:
             print "Fail: %s" % response.status_code
             f = open(ERROR_FILE, 'w')
@@ -81,7 +93,6 @@ class SimpleOAuthClient(oauth.OAuthClient):
         if response.status_code != 200:
             if response.status_code > 300 and response.status_code < 400:
                 newurl = response.headers['location']
-                import urlparse, cgi
                 parts = urlparse.urlparse(newurl)[2:]
             
                 print parts[2]
@@ -147,7 +158,6 @@ def run_example():
     print 'GOT'
     print response
     #  get the verifier
-    import urlparse, cgi
     query = urlparse.urlparse(response)[4]
     params = cgi.parse_qs(query, keep_blank_values=False)
     verifier = params['oauth_verifier'][0]

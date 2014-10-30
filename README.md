@@ -29,14 +29,26 @@ NOTE: The index page (index.html) references JQuery from Google CDN. Hard coding
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 ```
 
-### *version*/oauth/
-Contains examples using [OAuth 1.0a](https://tools.ietf.org/html/rfc5849) to connect 
-to the ADL LRS
+### /oauth/oauth1/
+Contains 3-legged examples using [OAuth 1.0a](https://tools.ietf.org/html/rfc5849) to connect to the ADL LRS. Contains an
+'out of band' example and redirect example. Be sure for both to add your client credentials for an OAuth1 client created
+under your account on the LRS. The scope is also adjustable for both.
 
-### 1.0/oauth/oauth2/
-Contains examples using [OAuth 2.0](https://tools.ietf.org/html/rfc6749) to connect to the ADL LRS. To run:
+`python oob_example.py`
+
+or
+
+`python uri_redirect_example.py`
+
+### /oauth/oauth2/
+Contains 3-legged example using [OAuth 2.0](https://tools.ietf.org/html/rfc6749) to connect to the ADL LRS. To run:
 
 `python oauth2_example.py`
+
+Be sure to add your client credentials for an OAuth2 client created under your account on the LRS. The scope is also adjustable. There is no 'out of band'
+example since the LRS Oauth2 module only supports callback URLs.
+
+*NOTE: For all OAuth examples, you'll need to install the python libs in each respective requirements.txt file.*
 
 ## config.js
 The 0.95 and 1.0 folders each contain a config.js.template. It is used to configure the LRS endpoint and user information. To use, rename the file to just config.js.
