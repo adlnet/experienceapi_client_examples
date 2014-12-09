@@ -85,8 +85,10 @@ function getVerb(verb) {
     if (verb === undefined) {
         return "";
     }
-    if (verb.display["en-US"] !== undefined) {
-        return verb.display["en-US"];
+    if (verb.display !== undefined){
+        if (verb.display["en-US"] !== undefined) {
+            return verb.display["en-US"];
+        }        
     }
     if (verb.id !== undefined) {
         return verb.id;
