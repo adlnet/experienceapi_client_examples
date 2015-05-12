@@ -32,7 +32,7 @@ NOTE: The index page (index.html) references JQuery from Google CDN. Hard coding
 ### /oauth/oauth1/
 Contains 3-legged examples using [OAuth 1.0a](https://tools.ietf.org/html/rfc5849) to connect to the ADL LRS. Contains an
 'out of band' example and redirect example. Be sure for both to add your client credentials for an OAuth1 client created
-under your account on the LRS. The scope is also adjustable for both.
+under your account on the LRS. The scope is also adjustable for both. (For the redirect example, make sure memcached has been started on your machine)
 
 `python oob_example.py`
 
