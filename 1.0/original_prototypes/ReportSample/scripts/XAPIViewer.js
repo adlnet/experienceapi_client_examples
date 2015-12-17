@@ -16,12 +16,12 @@ $(document).ready(function(){
         GetStatements(25,null,null,RenderStatements, true);
     });
     
-    GetActivityProfile ("act:adlnet.gov/JsTetris_XAPI", "profile:highscores", RenderHighScores);
-    GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_XAPI",RenderTetrisScoreChart);
+    GetActivityProfile ("http:adlnet.gov/JsTetris_XAPI", "profile:highscores", RenderHighScores);
+    GetStatements(0,"http://adlnet.gov/expapi/verbs/completed","http:adlnet.gov/JsTetris_XAPI",RenderTetrisScoreChart);
     $("#refreshHighScores").click(function(){
         $("#tetrisHighScoreData").empty();
-        GetActivityProfile("act:adlnet.gov/JsTetris_XAPI", "profile:highscores", RenderHighScores);
-        GetStatements(0,"http://adlnet.gov/xapi/verbs/completed","act:adlnet.gov/JsTetris_XAPI",RenderTetrisScoreChart);
+        GetActivityProfile("http:adlnet.gov/JsTetris_XAPI", "profile:highscores", RenderHighScores);
+        GetStatements(0,"http://adlnet.gov/expapi/verbs/completed","http:adlnet.gov/JsTetris_XAPI",RenderTetrisScoreChart);
     });
 });
 

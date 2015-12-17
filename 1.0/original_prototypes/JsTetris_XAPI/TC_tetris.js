@@ -5,7 +5,7 @@ var actorEmail = "";
 
 var gameId = "";
 
-var GAME_ID = "act:adlnet.gov/JsTetris_XAPI";
+var GAME_ID = "http:adlnet.gov/JsTetris_XAPI";
 
 conf = ADL.XAPIWrapper.lrs;
 
@@ -106,7 +106,7 @@ function tc_sendStatment_StartNewGame(){
         };
         var stmt = {
 			"actor":tc_actor(conf.actor),
-			"verb":{"id":"http://adlnet.gov/xapi/verbs/attempted",
+			"verb":{"id":"http://adlnet.gov/expapi/verbs/attempted",
 			        "display":{"en-US":"started"}},
 			"object":tcGameObj
         };
@@ -119,7 +119,7 @@ function tc_sendStatment_FinishLevel(level,time,apm,lines,score){
 	if (TCActive){
 		
 		var tcGameObj = {
-            "id":"act:adlnet.gov/JsTetris_XAPI/level" + level,
+            "id":"http:adlnet.gov/JsTetris_XAPI/level" + level,
 			"definition":{
 				"type":"type:media",
 				"name":{"en-US":"Js Tetris Level" + level},
@@ -141,7 +141,7 @@ function tc_sendStatment_FinishLevel(level,time,apm,lines,score){
 			
 		var stmt = {
 			"actor":tc_actor(conf.actor),
-			"verb":{"id":"http://adlnet.gov/xapi/verbs/passed(to_go_beyond)",
+			"verb":{"id":"http://adlnet.gov/expapi/verbs/passed",
 		            "display":{"en-US":"passed"}},
 			"object":tcGameObj,
 			"result":resultObj
@@ -178,7 +178,7 @@ function tc_sendStatment_EndGame(level,time,apm,lines,score){
 
 		var stmt = {
 			"actor":tc_actor(conf.actor),
-			"verb":{"id":"http://adlnet.gov/xapi/verbs/completed",
+			"verb":{"id":"http://adlnet.gov/expapi/verbs/completed",
 		            "display":{"en-US":"finished"}},
 			"object":tcGameObj,
 			"result":resultObj
