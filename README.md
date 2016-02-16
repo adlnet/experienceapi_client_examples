@@ -16,6 +16,16 @@ Contains examples based on the 0.95 version of the Experience API Specification
 ### 1.0/
 Contains examples based on the 1.0 version of the Experience API Specification
 
+### Start a static webserver to access to examples
+```javascript
+npm install
+// after run command below you can access to examples with specific port
+// 0.95 - http://localhost:9000
+grunt connect:v095:keepalive
+// 1.0 - http://localhost:9001
+grunt connect:v100:keepalive
+```
+
 ### *version*/original_prototypes/
 Prototypes created for the original BAA effort, includes a Statement viewer, 
 Reporting example, and Tetris game example.
