@@ -1,21 +1,6 @@
 Experience API Client Examples
 =============================
 
-## Contributing to the project
-We welcome contributions to this project. Fork this repository, 
-make changes and submit pull requests. If you're not comfortable 
-with editing the code, please submit an issue and we'll be happy 
-to address it.
-
-The xAPI client examples are built from the original Tin Can examples from Rustici Software that now implement ADL's [xAPIWrapper](https://github.com/adlnet/xAPIWrapper). 
-The examples are split into two folders, .95 for data compliant to the .95 xAPI specification and 1.0 for data compliant to the current 1.0.1 spec. Read more about the Experience API Spec [here](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI.md).
-
-### 0.95/
-Contains examples based on the 0.95 version of the Experience API Specification
-
-### 1.0/
-Contains examples based on the 1.0 version of the Experience API Specification
-
 ### Start a static webserver to access to examples
 ```javascript
 npm install
@@ -86,4 +71,34 @@ The Statement Viewer also displays all of the statements in the LRS in a collaps
 ## JS Tetris
 
 The tetris game is a fully playable tetris game that sends playing statements to the LRS. It will send statements once you begin a game, complete a level, and when you inevitably lose. If you don't want to submit data to the LRS, you can uncheck the box below the game, and you can also change the actors name by giving it your name and email address. There is also another tetris leaderboard on the left side of the game.
+
+### 0.95/
+Contains examples based on the 0.95 version of the Experience API Specification
+
+### 1.0/
+Contains examples based on the 1.0 version of the Experience API Specification
+
+## Contributing to the project
+We welcome contributions to this project. Fork this repository, 
+make changes and submit pull requests. If you're not comfortable 
+with editing the code, please submit an issue and we'll be happy 
+to address it.
+
+The xAPI client examples are built from the original Tin Can examples from Rustici Software that now implement ADL's [xAPIWrapper](https://github.com/adlnet/xAPIWrapper). 
+The examples are split into two folders, .95 for data compliant to the .95 xAPI specification and 1.0 for data compliant to the current 1.0.1 spec. Read more about the Experience API Spec [here](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI.md).
+
+## License
+   Copyright &copy;2016 Advanced Distributed Learning
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
 
