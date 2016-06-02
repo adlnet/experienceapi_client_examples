@@ -4,6 +4,11 @@ Experience API Client Examples
 Prototypes created for the original BAA effort, includes a Statement viewer, 
 Reporting example, and Tetris game example.
 
+The xAPI client examples are built from the original Tin Can examples from Rustici Software that now implement ADL's [xAPIWrapper](https://github.com/adlnet/xAPIWrapper). 
+
+The examples are split into two folders, .95 for data compliant to the .95 xAPI specification and 1.0 for data compliant to the current 1.0.1 spec. Read more about the Experience API Spec [here](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI.md).
+
+
 ### 0.95/
 Contains examples based on the 0.95 version of the Experience API Specification
 
@@ -53,15 +58,6 @@ example since the LRS Oauth2 module only supports callback URLs.
 
 *NOTE: For all OAuth examples, you'll need to install the python libs in each respective requirements.txt file.*
 
-## Contributing to the project
-We welcome contributions to this project. Fork this repository, 
-make changes and submit pull requests. If you're not comfortable 
-with editing the code, please submit an issue and we'll be happy 
-to address it.
-
-The xAPI client examples are built from the original Tin Can examples from Rustici Software that now implement ADL's [xAPIWrapper](https://github.com/adlnet/xAPIWrapper). 
-The examples are split into two folders, .95 for data compliant to the .95 xAPI specification and 1.0 for data compliant to the current 1.0.1 spec. Read more about the Experience API Spec [here](https://github.com/adlnet/xAPI-Spec/blob/master/xAPI.md).
-
 ## Configuration
 The 0.95 and 1.0 folders each contain a config.js.template. It is used to configure the LRS endpoint and user information. To use, rename the file to just config.js.
 
@@ -95,6 +91,11 @@ grunt connect:v095:keepalive
 grunt connect:v100:keepalive
 ```
 
+## Contributing to the project
+We welcome contributions to this project. Fork this repository, 
+make changes and submit pull requests. If you're not comfortable 
+with editing the code, please submit an issue and we'll be happy 
+to address it.
 
 ## License
    Copyright &copy;2016 Advanced Distributed Learning
